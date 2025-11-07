@@ -906,7 +906,7 @@ const NASA_3D_MODELS = [
 const CATEGORIES = ["All", ...new Set(NASA_3D_MODELS.map((m) => m.category))];
 
 export default function Models3D() {
-  const [selectedModel, setSelectedModel] = useState(NASA_3D_MODELS[0]);
+  const [selectedModel, setSelectedModel] = useState(NASA_3D_MODELS[40]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -1034,7 +1034,7 @@ export default function Models3D() {
           at the top.
         </div>
       )}
-      <div className="h-[520px] space-y-2 overflow-y-auto pr-1">
+      <div className=" h-[720px]  space-y-2 overflow-y-auto pr-1">
         {orderedModels.map((model) => (
           <button
             key={model.id}

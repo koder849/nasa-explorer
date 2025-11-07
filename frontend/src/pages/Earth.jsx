@@ -73,7 +73,7 @@ export default function Earth() {
 
               return (
                 <article key={item.identifier} className="neon-border rounded-2xl bg-white">
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-110 overflow-hidden">
                     <img src={url} alt={item.caption} className="h-full w-full object-cover" loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <p className="absolute bottom-3 left-4 rounded-full border border-white/50 px-3 py-1 text-xs uppercase tracking-[0.3em] text-white">
@@ -81,7 +81,7 @@ export default function Earth() {
                     </p>
                   </div>
                   <div className="space-y-2 border-t border-slate-100 p-4 text-sm">
-                    <h3 className="text-lg font-semibold text-slate-900">{item.caption}</h3>
+                    <p className="font-semibold text-slate-900">{item.caption}</p>
                     <p className="text-slate-600">Centroid latitude: {latDisplay}</p>
                     <a href={url} target="_blank" rel="noreferrer" className="text-xs font-semibold text-indigo-600">
                       Download full image →
