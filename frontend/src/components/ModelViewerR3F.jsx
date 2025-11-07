@@ -1,15 +1,83 @@
-import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Environment, Preload } from '@react-three/drei';
-import { Suspense, useRef, useState, useEffect } from 'react';
-import { EffectComposer, ToneMapping, N8AO } from '@react-three/postprocessing';
-import { useControls, folder, button } from 'leva';
+import { Canvas, useThree } from "@react-three/fiber";
+import {
+  OrbitControls,
+  useGLTF,
+  Environment,
+  Preload,
+  Stars,
+  ContactShadows,
+  BakeShadows,
+} from "@react-three/drei";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { EffectComposer, ToneMapping, N8AO } from "@react-three/postprocessing";
+import { useControls, folder, button, LevaPanel, useCreateStore } from "leva";
+import { Box3, Vector3 } from "three";
 
-function Model({ url }) {
+const ENVIRONMENT_MAPS = {
+  sunset: {
+    label: "Sunset",
+    files: [
+      "/cubemap/sunset/right.png",
+      "/cubemap/sunset/left.png",
+      "/cubemap/sunset/top.png",
+      "/cubemap/sunset/bot.png",
+      "/cubemap/sunset/front.png",
+      "/cubemap/sunset/back.png",
+    ],
+  },
+  galaxy: {
+    label: "Galaxy",
+    files: [
+      "/cubemap/galaxy/right.png",
+      "/cubemap/galaxy/left.png",
+      "/cubemap/galaxy/top.png",
+      "/cubemap/galaxy/bot.png",
+      "/cubemap/galaxy/front.png",
+      "/cubemap/galaxy/back.png",
+    ],
+  },
+  sphere: {
+    label: "Sphere",
+    file: "/cubemap/sphere.jpg",
+  },
+};
+
+function Model({ url, onLoad }) {
   const group = useRef();
   const { scene } = useGLTF(url, true);
+  const { camera, controls } = useThree();
+
+  useEffect(() => {
+    if (!group.current) return;
+
+    // Calculate bounding box
+    const box = new Box3().setFromObject(group.current);
+    const size = box.getSize(new Vector3());
+    const center = box.getCenter(new Vector3());
+
+    // Calculate distance to fit model
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const fov = camera.fov * (Math.PI / 180);
+    let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+    cameraZ *= 1.5; // Add padding
+
+    // Update camera position
+    camera.position.set(cameraZ, center.y, cameraZ);
+    camera.lookAt(center);
+    camera.updateProjectionMatrix();
+
+    // Reset controls to new target
+    if (controls) {
+      controls.target.copy(center);
+      controls.autoRotate = false;
+      controls.reset();
+    }
+
+    onLoad?.();
+  }, [scene, camera, controls, onLoad]);
 
   return (
-    <group ref={group} position={[0, 2, 0]}>
+    <group ref={group} position={[0, 0, 0]}>
       <primitive object={scene} />
     </group>
   );
@@ -24,322 +92,408 @@ function LoadingBox() {
   );
 }
 
-function SceneContent({ modelUrl, showTest, controls, orbitControlsRef, environment }) {
+function SceneContent({
+  modelUrl,
+  showPlaceholder,
+  sceneMode,
+  environmentPreset,
+  ambientIntensity,
+  keyIntensity,
+  fillIntensity,
+  showGrid,
+  showAxes,
+  enableToneMapping,
+  aoRadius,
+  aoIntensity,
+  contactShadows,
+  onModelLoad,
+}) {
+  const envConfig = useMemo(() => {
+    if (environmentPreset === "none" || sceneMode === "hangar") return null;
+    return ENVIRONMENT_MAPS[environmentPreset] ?? ENVIRONMENT_MAPS.sunset;
+  }, [environmentPreset, sceneMode]);
+
   return (
     <>
-      {/* Environment - conditional based on setting */}
-      {environment === 'sunset' && (
+      {envConfig && (
         <Environment
+          key={`${sceneMode}-${environmentPreset}`}
           background
-          files={[
-            '/cubemap/sunset/right.png',
-            '/cubemap/sunset/left.png',
-            '/cubemap/sunset/top.png',
-            '/cubemap/sunset/bot.png',
-            '/cubemap/sunset/front.png',
-            '/cubemap/sunset/back.png',
-          ]}
+          files={envConfig.files ?? envConfig.file}
         />
       )}
+      {sceneMode === "starfield" && (
+        <Stars
+          key="starfield"
+          radius={120}
+          depth={50}
+          count={9000}
+          factor={4}
+          fade
+          speed={0.4}
+        />
+      )}
+      {sceneMode === "hangar" && (
+        <>
+          <Environment
+            key="hangar-env"
+            preset="warehouse"
+            background
+            blur={0.65}
+          />
+          {contactShadows && (
+            <ContactShadows
+              position={[0, 0, 0]}
+              opacity={0.55}
+              scale={25}
+              blur={2}
+              far={25}
+            />
+          )}
+        </>
+      )}
 
-      {/* Lighting */}
-      <ambientLight intensity={controls.ambientIntensity} />
-      <directionalLight position={[10, 15, 10]} intensity={controls.directionalIntensity1} castShadow />
-      <directionalLight position={[-10, -5, -10]} intensity={controls.directionalIntensity2} />
+      <ambientLight intensity={ambientIntensity} />
+      <directionalLight
+        position={[12, 18, 10]}
+        intensity={keyIntensity}
+        castShadow
+      />
+      <directionalLight position={[-10, -4, -10]} intensity={fillIntensity} />
 
-      {/* Main content */}
-      {showTest ? (
+      {showPlaceholder ? (
         <LoadingBox />
       ) : (
         <Suspense fallback={<LoadingBox />}>
-          <Model url={modelUrl} />
+          <Model url={modelUrl} onLoad={onModelLoad} />
         </Suspense>
       )}
 
-      {/* Grid and helpers */}
-      {controls.showGrid && <gridHelper args={[50, 50]} position={[0, 0, 0]} />}
-      {controls.showAxes && <axesHelper args={[10]} position={[0, 0, 0]} />}
+      {showGrid && <gridHelper args={[50, 50]} position={[0, 0, 0]} />}
+      {showAxes && <axesHelper args={[10]} position={[0, 0, 0]} />}
 
-      {/* Post-processing */}
       <EffectComposer>
-        {controls.enableToneMapping && <ToneMapping />}
-        <N8AO aoRadius={controls.aoRadius} intensity={controls.aoIntensity} />
+        {enableToneMapping && <ToneMapping />}
+        <N8AO aoRadius={aoRadius} intensity={aoIntensity} />
       </EffectComposer>
 
-      {/* Preload models */}
       <Preload all />
     </>
   );
 }
 
-export default function ModelViewerR3F({ modelUrl, modelName, isFullScreen = false, onFullScreenChange, onSceneChange }) {
+export default function ModelViewerR3F({
+  modelUrl,
+  modelName,
+  onFullScreenChange,
+  onSceneChange,
+  containerClassName = "rounded-3xl border border-white/10 min-h-[420px]",
+  forceFullScreen = false,
+}) {
+  const wrapperRef = useRef(null);
   const canvasRef = useRef();
   const orbitControlsRef = useRef();
-  const [showTest, setShowTest] = useState(false);
-  const [isFS, setIsFS] = useState(isFullScreen);
+  const [isFS, setIsFS] = useState(false);
+  const store = useCreateStore();
 
-  // Get Leva controls
-  const controls = useControls({
-    'Scene Mode': folder({
-      sceneType: {
-        value: 'model',
-        options: ['model', 'empty'],
+  const { sceneMode, showPlaceholder, showGrid, showAxes } = useControls(
+    "Scene",
+    () => ({
+      sceneMode: {
+        label: "Mode",
+        value: "model",
+        options: {
+          Model: "model",
+          Water: "water",
+          Void: "void",
+          Starfield: "starfield",
+          Hangar: "hangar",
+        },
       },
-    }),
-    'Environment': folder({
-      environment: {
-        value: 'sunset',
-        options: ['sunset', 'none'],
-      },
-    }),
-    'Scene Settings': folder({
-      autoRotate: false,
-      autoRotateSpeed: { value: 3, min: 0, max: 10, step: 0.5 },
+      showPlaceholder: { label: "Debug placeholder", value: false },
       showGrid: false,
       showAxes: false,
-      zoomSpeed: { value: 1.5, min: 0.5, max: 5, step: 0.5 },
-      panSpeed: { value: 0.8, min: 0.1, max: 2, step: 0.1 },
     }),
-    'Lighting': folder({
-      ambientIntensity: { value: 0.8, min: 0, max: 2, step: 0.1 },
-      directionalIntensity1: { value: 1.5, min: 0, max: 3, step: 0.1 },
-      directionalIntensity2: { value: 0.6, min: 0, max: 3, step: 0.1 },
+    { collapsed: true },
+    { store }
+  );
+
+  const { environmentPreset } = useControls(
+    "Environment",
+    () => ({
+      environmentPreset: {
+        label: "Backdrop",
+        value: "none",
+        options: ["none", "sunset", "galaxy", "sphere"],
+      },
     }),
-    'Post Processing': folder({
-      aoRadius: { value: 1, min: 0, max: 5, step: 0.5 },
-      aoIntensity: { value: 0.5, min: 0, max: 2, step: 0.1 },
+    { collapsed: true },
+    { store }
+  );
+
+  const { autoRotate, autoRotateSpeed, zoomSpeed, panSpeed, dampingFactor } =
+    useControls(
+      "Camera",
+      () => ({
+        autoRotate: false,
+        autoRotateSpeed: { value: 2, min: 0, max: 10, step: 0.5 },
+        zoomSpeed: { value: 1.2, min: 0.2, max: 4, step: 0.1 },
+        panSpeed: { value: 0.8, min: 0.1, max: 2, step: 0.1 },
+        dampingFactor: { value: 0.08, min: 0.01, max: 0.2, step: 0.01 },
+      }),
+      { collapsed: true },
+      { store }
+    );
+
+  const { ambientIntensity, keyIntensity, fillIntensity, contactShadows } =
+    useControls(
+      "Lighting",
+      () => ({
+        ambientIntensity: { value: 0.9, min: 0, max: 2, step: 0.1 },
+        keyIntensity: { value: 1.4, min: 0, max: 3, step: 0.1 },
+        fillIntensity: { value: 0.6, min: 0, max: 3, step: 0.1 },
+        contactShadows: { value: true },
+      }),
+      { collapsed: true },
+      { store }
+    );
+
+  const { aoRadius, aoIntensity, enableToneMapping } = useControls(
+    "Post",
+    () => ({
+      aoRadius: { value: 1.2, min: 0, max: 5, step: 0.1 },
+      aoIntensity: { value: 0.6, min: 0, max: 2, step: 0.05 },
       enableToneMapping: true,
     }),
-    'Actions': folder({
+    { collapsed: true },
+    { store }
+  );
+
+  useControls(
+    "Actions",
+    () => ({
       recenter: button(() => {
-        if (orbitControlsRef.current) {
-          orbitControlsRef.current.reset();
-        }
+        orbitControlsRef.current?.reset();
       }),
     }),
-  });
+    { collapsed: true },
+    { store }
+  );
 
-  // Handle scene type changes
   useEffect(() => {
     if (onSceneChange) {
-      onSceneChange(controls.sceneType);
+      onSceneChange(sceneMode);
     }
-  }, [controls.sceneType, onSceneChange]);
+  }, [sceneMode, onSceneChange]);
 
-  const handleFullScreen = () => {
-    const newState = !isFS;
-    setIsFS(newState);
-    if (onFullScreenChange) {
-      onFullScreenChange(newState);
+  useEffect(() => {
+    const handleChange = () => {
+      const active = document.fullscreenElement === wrapperRef.current;
+      setIsFS(active);
+      onFullScreenChange?.(active);
+    };
+
+    document.addEventListener("fullscreenchange", handleChange);
+    return () => document.removeEventListener("fullscreenchange", handleChange);
+  }, [onFullScreenChange]);
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    if (forceFullScreen && !isFS) {
+      wrapperRef.current.requestFullscreen?.();
+    } else if (
+      !forceFullScreen &&
+      isFS &&
+      document.fullscreenElement === wrapperRef.current
+    ) {
+      document.exitFullscreen?.();
     }
-  };
+  }, [forceFullScreen, isFS]);
 
-  // For water and empty scenes, render different content
-  if (controls.sceneType === 'water') {
+  const baseClasses = "relative bg-void-900 overflow-hidden";
+  const layoutClasses = isFS
+    ? "fixed inset-0 z-50 h-screen w-screen"
+    : containerClassName;
+
+  const levaPanel = (
+    <div className="absolute top-4 right-4 z-30">
+      <LevaPanel
+        store={store}
+        fill
+        flat
+        hideCopyButton
+        titleBar={true}
+        // oneLineLabels
+      />
+    </div>
+  );
+
+  const renderOrbitControls = () => (
+    <OrbitControls
+      ref={orbitControlsRef}
+      autoRotate={autoRotate}
+      autoRotateSpeed={autoRotateSpeed}
+      zoomSpeed={zoomSpeed}
+      panSpeed={panSpeed}
+      enableZoom
+      enablePan
+      enableRotate
+      dampingFactor={dampingFactor}
+    />
+  );
+
+  const instructions = (
+    <div className="pointer-events-none absolute bottom-4 left-4 text-xs text-chrome-500">
+      Drag to rotate • Scroll to zoom • Right-click to pan
+      {isFS ? (
+        <div className="mt-1">
+          Press Esc or use the dashboard button to exit fullscreen
+        </div>
+      ) : (
+        <div className="mt-1">
+          Use the Expand Viewer button to enter fullscreen
+        </div>
+      )}
+    </div>
+  );
+
+  if (sceneMode === "water") {
     return (
-      <div className={`relative bg-void-900 overflow-hidden ${
-        isFS ? 'fixed inset-0 z-50' : 'rounded-3xl border border-white/10 h-96'
-      }`}>
+      <div ref={wrapperRef} className={`${baseClasses} ${layoutClasses}`}>
         <Canvas
           ref={canvasRef}
           camera={{ position: [15, 10, 15], fov: 75 }}
           gl={{ antialias: true, alpha: true }}
-          className="w-full h-full"
+          className="h-full w-full"
         >
-          {/* Water Plane */}
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-            <planeGeometry args={[100, 100, 64, 64]} />
+            <planeGeometry args={[120, 120, 64, 64]} />
             <meshStandardMaterial
-              color="#1a472a"
-              metalness={0.8}
-              roughness={0.2}
+              color="#1b263b"
+              metalness={0.7}
+              roughness={0.3}
             />
           </mesh>
 
-          {/* Lighting */}
-          <ambientLight intensity={controls.ambientIntensity} />
-          <directionalLight position={[10, 15, 10]} intensity={controls.directionalIntensity1} castShadow />
-          <directionalLight position={[-10, -5, -10]} intensity={controls.directionalIntensity2} />
+          <ambientLight intensity={ambientIntensity} />
+          <directionalLight
+            position={[10, 15, 10]}
+            intensity={keyIntensity}
+            castShadow
+          />
+          <directionalLight
+            position={[-10, -5, -10]}
+            intensity={fillIntensity}
+          />
 
-          {/* Grid */}
-          {controls.showGrid && <gridHelper args={[100, 20]} />}
+          {showGrid && <gridHelper args={[100, 20]} />}
 
-          {/* Post-processing */}
           <EffectComposer>
-            {controls.enableToneMapping && <ToneMapping />}
-            <N8AO aoRadius={controls.aoRadius} intensity={controls.aoIntensity} />
+            {enableToneMapping && <ToneMapping />}
+            <N8AO aoRadius={aoRadius} intensity={aoIntensity} />
           </EffectComposer>
 
           <Preload all />
-
-          <OrbitControls
-            ref={orbitControlsRef}
-            autoRotate={controls.autoRotate}
-            autoRotateSpeed={controls.autoRotateSpeed}
-            zoomSpeed={controls.zoomSpeed}
-            panSpeed={controls.panSpeed}
-            enableZoom
-            enablePan
-            enableRotate
-            dampingFactor={0.05}
-          />
+          {renderOrbitControls()}
         </Canvas>
 
-        {/* Controls Overlay */}
-        <div className={`absolute top-4 right-4 flex gap-2 z-10 ${isFS ? 'flex-col' : 'flex-row'}`}>
-          <button
-            onClick={handleFullScreen}
-            className="px-3 py-2 rounded-lg text-sm font-medium transition bg-white/5 border border-white/10 text-chrome-400 hover:bg-white/10 hover:border-white/20"
-            title={isFS ? 'Exit fullscreen' : 'Enter fullscreen'}
-          >
-            {isFS ? '⛶ Exit' : '⛶ Full'}
-          </button>
-        </div>
-
-        {/* Info */}
+        {levaPanel}
+        {instructions}
         {isFS && (
           <div className="absolute top-4 left-4 text-white">
-            <h2 className="text-xl font-bold">Water Scene</h2>
-            <p className="text-xs text-chrome-500 mt-1">Default Environment</p>
+            <h2 className="text-xl font-semibold">Water Scene</h2>
+            <p className="mt-1 text-xs text-chrome-500">
+              Reflective ocean plane
+            </p>
           </div>
         )}
       </div>
     );
   }
 
-  if (controls.sceneType === 'empty') {
+  if (sceneMode === "void") {
     return (
-      <div className={`relative bg-void-900 overflow-hidden ${
-        isFS ? 'fixed inset-0 z-50' : 'rounded-3xl border border-white/10 h-96'
-      }`}>
+      <div ref={wrapperRef} className={`${baseClasses} ${layoutClasses}`}>
         <Canvas
           ref={canvasRef}
           camera={{ position: [0, 4, 12], fov: 75 }}
           gl={{ antialias: true, alpha: true }}
-          className="w-full h-full"
+          className="h-full w-full"
         >
-          {/* Lighting only */}
-          <ambientLight intensity={controls.ambientIntensity} />
-          <directionalLight position={[10, 15, 10]} intensity={controls.directionalIntensity1} castShadow />
-          <directionalLight position={[-10, -5, -10]} intensity={controls.directionalIntensity2} />
+          <ambientLight intensity={ambientIntensity} />
+          <directionalLight
+            position={[10, 15, 10]}
+            intensity={keyIntensity}
+            castShadow
+          />
+          <directionalLight
+            position={[-10, -5, -10]}
+            intensity={fillIntensity}
+          />
 
-          {/* Grid */}
-          {controls.showGrid && <gridHelper args={[50, 50]} position={[0, 0, 0]} />}
+          {showGrid && <gridHelper args={[50, 50]} position={[0, 0, 0]} />}
 
-          {/* Post-processing */}
           <EffectComposer>
-            {controls.enableToneMapping && <ToneMapping />}
-            <N8AO aoRadius={controls.aoRadius} intensity={controls.aoIntensity} />
+            {enableToneMapping && <ToneMapping />}
+            <N8AO aoRadius={aoRadius} intensity={aoIntensity} />
           </EffectComposer>
 
           <Preload all />
-
-          <OrbitControls
-            ref={orbitControlsRef}
-            autoRotate={controls.autoRotate}
-            autoRotateSpeed={controls.autoRotateSpeed}
-            zoomSpeed={controls.zoomSpeed}
-            panSpeed={controls.panSpeed}
-            enableZoom
-            enablePan
-            enableRotate
-            dampingFactor={0.05}
-          />
+          {renderOrbitControls()}
         </Canvas>
 
-        {/* Controls Overlay */}
-        <div className={`absolute top-4 right-4 flex gap-2 z-10 ${isFS ? 'flex-col' : 'flex-row'}`}>
-          <button
-            onClick={handleFullScreen}
-            className="px-3 py-2 rounded-lg text-sm font-medium transition bg-white/5 border border-white/10 text-chrome-400 hover:bg-white/10 hover:border-white/20"
-            title={isFS ? 'Exit fullscreen' : 'Enter fullscreen'}
-          >
-            {isFS ? '⛶ Exit' : '⛶ Full'}
-          </button>
-        </div>
-
-        {/* Info */}
+        {levaPanel}
+        {instructions}
         {isFS && (
           <div className="absolute top-4 left-4 text-white">
-            <h2 className="text-xl font-bold">Empty Scene</h2>
-            <p className="text-xs text-chrome-500 mt-1">3D Space Only</p>
+            <h2 className="text-xl font-semibold">Void Scene</h2>
+            <p className="mt-1 text-xs text-chrome-500">Minimal light rig</p>
           </div>
         )}
       </div>
     );
   }
 
-  // Default model scene
   return (
-    <div className={`relative bg-void-900 overflow-hidden ${
-      isFS ? 'fixed inset-0 z-50' : 'rounded-3xl border border-white/10 h-96'
-    }`}>
+    <div ref={wrapperRef} className={`${baseClasses} ${layoutClasses}`}>
       <Canvas
         ref={canvasRef}
         camera={{ position: [0, 4, 12], fov: 75 }}
         gl={{ antialias: true, alpha: true }}
-        className="w-full h-full"
+        className="h-full w-full"
       >
-        <SceneContent 
-          modelUrl={modelUrl} 
-          showTest={showTest} 
-          controls={controls} 
-          orbitControlsRef={orbitControlsRef}
-          environment={controls.environment}
+        <SceneContent
+          modelUrl={modelUrl}
+          showPlaceholder={showPlaceholder}
+          sceneMode={sceneMode}
+          environmentPreset={environmentPreset}
+          ambientIntensity={ambientIntensity}
+          keyIntensity={keyIntensity}
+          fillIntensity={fillIntensity}
+          showGrid={showGrid}
+          showAxes={showAxes}
+          enableToneMapping={enableToneMapping}
+          aoRadius={aoRadius}
+          aoIntensity={aoIntensity}
+          contactShadows={contactShadows}
+          onModelLoad={() => {
+            // Reset auto-rotate after model loads
+            if (orbitControlsRef.current) {
+              orbitControlsRef.current.autoRotate = autoRotate;
+            }
+          }}
         />
-        
-        <OrbitControls
-          ref={orbitControlsRef}
-          autoRotate={controls.autoRotate}
-          autoRotateSpeed={controls.autoRotateSpeed}
-          zoomSpeed={controls.zoomSpeed}
-          panSpeed={controls.panSpeed}
-          enableZoom
-          enablePan
-          enableRotate
-          dampingFactor={0.05}
-        />
+
+        {renderOrbitControls()}
       </Canvas>
 
-      {/* Controls Overlay */}
-      <div className={`absolute top-4 right-4 flex gap-2 z-10 ${isFS ? 'flex-col' : 'flex-row'}`}>
-        <button
-          onClick={() => setShowTest(!showTest)}
-          className="px-3 py-2 rounded-lg text-sm font-medium transition bg-white/5 border border-white/10 text-chrome-400 hover:bg-white/10 hover:border-white/20"
-          title="Toggle test box"
-        >
-          🔧 {showTest ? 'Hide' : 'Test'}
-        </button>
-        
-        <button
-          onClick={handleFullScreen}
-          className="px-3 py-2 rounded-lg text-sm font-medium transition bg-white/5 border border-white/10 text-chrome-400 hover:bg-white/10 hover:border-white/20"
-          title={isFS ? 'Exit fullscreen' : 'Enter fullscreen'}
-        >
-          {isFS ? '⛶ Exit' : '⛶ Full'}
-        </button>
-      </div>
+      {levaPanel}
+      {instructions}
 
-      {/* Help text */}
-      {!isFS && (
-        <div className="absolute bottom-4 left-4 text-xs text-chrome-500 pointer-events-none">
-          Drag to rotate • Scroll to zoom • Right-click to pan
-        </div>
-      )}
-
-      {/* Exit fullscreen hint */}
-      {isFS && (
-        <div className="absolute bottom-4 left-4 text-xs text-chrome-500">
-          <div>Drag to rotate • Scroll to zoom • Right-click to pan</div>
-          <div className="mt-2">Press ⛶ or ESC to exit fullscreen</div>
-        </div>
-      )}
-
-      {/* Model info in fullscreen */}
       {isFS && (
         <div className="absolute top-4 left-4 text-white">
-          <h2 className="text-xl font-bold">{modelName}</h2>
-          <p className="text-xs text-chrome-500 mt-1">3D Model Viewer</p>
+          <h2 className="text-xl font-semibold">{modelName}</h2>
+          <p className="mt-1 text-xs text-chrome-500">Interactive 3D model</p>
         </div>
       )}
     </div>

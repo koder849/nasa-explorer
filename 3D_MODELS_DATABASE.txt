@@ -1,0 +1,246 @@
+# NASA 3D Models Database
+# Format: Model Name | GLB URL | Category
+# Base URL: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/
+
+## ANTENNAS & DISHES
+70-Meter Dish|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/70-meter%20Dish/70%20meter%20dish.glb|Antennas
+Deep Space Network 34-meter|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Network%2034-meter/Deep%20Space%20Network%2034-meter.glb|Antennas
+Deep Space Network 70-meter|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Network%2070-meter/Deep%20Space%20Network%2070-meter.glb|Antennas
+Tall Dish (dish)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tall%20Dish/Tall%20Dish%20(dish).glb|Antennas
+Tall Dish (post)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tall%20Dish/Tall%20Dish%20(post).glb|Antennas
+Tall Dish (turntable)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tall%20Dish/Tall%20Dish%20(turntable).glb|Antennas
+Radome|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Radome/Radome.glb|Antennas
+
+## TELESCOPES & OBSERVATORIES
+Hubble Space Telescope (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20Space%20Telescope%20(A)/Hubble%20Space%20Telescope%20(A).glb|Telescopes
+Hubble Space Telescope (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20Space%20Telescope%20(B)/Hubble%20Space%20Telescope%20(B).glb|Telescopes
+James Webb Space Telescope (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/James%20Webb%20Space%20Telescope%20(A)/James%20Webb%20Space%20Telescope%20(A).glb|Telescopes
+James Webb Space Telescope (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/James%20Webb%20Space%20Telescope%20(B)/James%20Webb%20Space%20Telescope%20(B).glb|Telescopes
+Chandra X-ray Observatory|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Chandra%20X-ray%20Observatory/Chandra%20X-ray%20Observatory.glb|Telescopes
+Spitzer Space Telescope|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Spitzer%20Space%20Telescope/Spitzer%20Space%20Telescope.glb|Telescopes
+Solar Dynamics Observatory|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20Dynamics%20Observatory/Solar%20Dynamics%20Observatory.glb|Telescopes
+Solar and Heliospheric Observatory|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20and%20Heliospheric%20Observatory/Solar%20and%20Heliospheric%20Observatory.glb|Telescopes
+Kepler (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Kepler%20(A)/Kepler%20(A).glb|Telescopes
+Kepler (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Kepler%20(B)/Kepler%20(B).glb|Telescopes
+Nancy Grace Roman Space Telescope (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Nancy%20Grace%20Roman%20Space%20Telescope%20(A)/Nancy%20Grace%20Roman%20Space%20Telescope%20(A).glb|Telescopes
+Nancy Grace Roman Space Telescope (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Nancy%20Grace%20Roman%20Space%20Telescope%20(B)/Nancy%20Grace%20Roman%20Space%20Telescope%20(B).glb|Telescopes
+
+## SPACE STATIONS
+International Space Station (ISS) (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20Space%20Station%20(ISS)%20(A)/International%20Space%20Station%20(ISS)%20(A).glb|Space%20Stations
+International Space Station (ISS) (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20Space%20Station%20(ISS)%20(B)/International%20Space%20Station%20(ISS)%20(B).glb|Space%20Stations
+Skylab|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Skylab/Skylab.glb|Space%20Stations
+Mir|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mir/Mir.glb|Space%20Stations
+Gateway Core|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gateway/Gateway%20Core.glb|Space%20Stations
+
+## SPACECRAFT
+Cassini-Huygens (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(A)/Cassini-Huygens%20(A).glb|Spacecraft
+Cassini-Huygens (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(B)/Cassini-Huygens%20(B).glb|Spacecraft
+Cassini Assembly|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini%20Assembly/Cassini%20Assembly.glb|Spacecraft
+Parker Solar Probe|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Parker%20Solar%20Probe/Parker%20Solar%20Probe.glb|Spacecraft
+Juno (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Juno%20(A)/Juno%20(A).glb|Spacecraft
+Juno (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Juno%20(B)/Juno%20(B).glb|Spacecraft
+Dawn|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Dawn/Dawn.glb|Spacecraft
+Rosetta|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Rosetta/Rosetta.glb|Spacecraft
+Stardust|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Stardust/Stardust.glb|Spacecraft
+Deep Impact (EPOXI)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/Deep%20Impact.glb|Spacecraft
+Galileo|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Galileo/Galileo.glb|Spacecraft
+Magellan|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Magellan/Magellan.glb|Spacecraft
+MESSENGER|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/MErcury%20Surface%2C%20Space%20ENvironment%2C%20GEochemistry%2C%20and%20Ranging%20(MESSENGER)/MErcury%20Surface%2C%20Space%20ENvironment%2C%20GEochemistry%2C%20and%20Ranging%20(MESSENGER).glb|Spacecraft
+Voyager Probe (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Voyager%20Probe%20(A)/Voyager%20Probe%20(A).glb|Spacecraft
+Voyager Probe (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Voyager%20Probe%20(B)/Voyager%20Probe%20(B).glb|Spacecraft
+Pioneer 10|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Pioneer%2010/Pioneer%2010.glb|Spacecraft
+Deep Space 1|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%201/Deep%20Space%201.glb|Spacecraft
+NEAR Shoemaker|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/NEAR%20Shoemaker/NEAR%20Shoemaker.glb|Spacecraft
+OSIRIS-REx|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Origins%2C%20Spectral%20Interpretation%2C%20Resource%20Identification%2C%20and%20Security%20-%20Regolith%20Explorer%20(OSIRIS-REx)/OSIRIS-REx.glb|Spacecraft
+
+## MARS MISSIONS
+Curiosity Rover (MSL) (Clean)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Curiosity%20Rover%20(MSL)/Curiosity%20Rover%20(MSL)%20(Clean).blend|Mars
+Mars 2020 Perseverance Rover|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%202020%20Perseverance%20Rover/Mars%202020%20Perseverance%20Rover.glb|Mars
+Ingenuity Mars Helicopter|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ingenuity%20Mars%20Helicopter/Ingenuity%20Mars%20Helicopter.glb|Mars
+Mars Exploration Rover - Opportunity (MER-B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B).glb|Mars
+Viking Lander|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Viking%20Lander/Viking%20Lander.glb|Mars
+Mars Global Surveyor|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Global%20Surveyor/Mars%20Global%20Surveyor.glb|Mars
+Mars Odyssey|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Odyssey/Mars%20Odyssey.glb|Mars
+Mars Reconnaissance Orbiter (MRO) (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Reconnaissance%20Orbiter%20(MRO)%20(A)/Mars%20Reconnaissance%20Orbiter%20(MRO)%20(A).glb|Mars
+Mars Reconnaissance Orbiter (MRO) (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Reconnaissance%20Orbiter%20(MRO)%20(B)/Mars%20Reconnaissance%20Orbiter%20(MRO)%20(B).glb|Mars
+Mars Atmosphere and Volatile EvolutioN (MAVEN) (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Atmosphere%20and%20Volatile%20EvolutioN%20(MAVEN)%20(A)/Mars%20Atmosphere%20and%20Volatile%20EvolutioN%20(MAVEN)%20(A).glb|Mars
+
+## SATELLITES & EARTH OBSERVATION
+Terra|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Terra/Terra.glb|Satellites
+Aqua (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aqua%20(A)/Aqua%20(A).glb|Satellites
+Aqua (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aqua%20(B)/Aqua%20(B).glb|Satellites
+Aqua (C)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aqua%20(C)/Aqua%20(C).glb|Satellites
+Aura (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aura%20(A)/Aura%20(A).glb|Satellites
+Aura (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aura%20(B)/Aura%20(B).glb|Satellites
+Aura (C)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aura%20(C)/Aura%20(C).glb|Satellites
+Aura (D)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aura%20(D)/Aura%20(D).glb|Satellites
+Landsat 7|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%207/Landsat%207.glb|Satellites
+Landsat 8|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%208/Landsat%208.glb|Satellites
+Landsat 1, 2, and 3|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%201%2C%202%2C%20and%203/Landsat%201%2C%202%2C%20and%203.glb|Satellites
+Landsat 4 and 5|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%204%20and%205/Landsat%204%20and%205.glb|Satellites
+SeaStar|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/SeaStar/SeaStar.glb|Satellites
+Quick Scatterometer (QuikSCAT)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Quick%20Scatterometer%20(QuikSCAT)/Quick%20Scatterometer%20(QuikSCAT).glb|Satellites
+Orbiting Carbon Observatory (OCO) 2|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Orbiting%20Carbon%20Observatory%20(OCO)%202/Orbiting%20Carbon%20Observatory%20(OCO)%202.glb|Satellites
+Global Precipitation Measurement|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Global%20Precipitation%20Measurement/Global%20Precipitation%20Measurement.glb|Satellites
+Tropical Rainfall Measuring Mission (TRMM)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tropical%20Rainfall%20Measuring%20Mission%20(TRMM)/Tropical%20Rainfall%20Measuring%20Mission%20(TRMM).glb|Satellites
+Suomi National Polar-orbiting Partnership (Suomi NPP)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Suomi%20National%20Polar-orbiting%20Partnership%20(Suomi%20NPP)/Suomi%20National%20Polar-orbiting%20Partnership%20(Suomi%20NPP).glb|Satellites
+Jason 1|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Jason%201/Jason%201.glb|Satellites
+TOPEX-Poseidon|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/TOPEX-Poseidon/TOPEX-Poseidon.glb|Satellites
+Ocean Surface Topography Mission (OSTM Jason-2)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ocean%20Surface%20Topography%20Mission%20(OSTM%20Jason-2)/Ocean%20Surface%20Topography%20Mission%20(OSTM%20Jason-2).glb|Satellites
+Jason Continuity of Service (Sentinel-6)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Jason%20Continuity%20of%20Service%20(Sentinel-6)/Jason%20Continuity%20of%20Service%20(Sentinel-6).glb|Satellites
+CloudSat (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CloudSat%20(A)/CloudSat%20(A).glb|Satellites
+CloudSat (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CloudSat%20(B)/CloudSat%20(B).glb|Satellites
+CloudSat (C)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CloudSat%20(C)/CloudSat%20(C).glb|Satellites
+Cloud-Aerosol Lidar and Infrared Pathfinder Satellite (CALIPSO)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cloud-Aerosol%20Lidar%20and%20Infrared%20Pathfinder%20Satellite%20(CALIPSO)/Cloud-Aerosol%20Lidar%20and%20Infrared%20Pathfinder%20Satellite%20(CALIPSO).glb|Satellites
+
+## COMMUNICATION & TRACKING SATELLITES
+Tracking and Data Relay Satellites (TDRS) (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(A)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(A).glb|Satellites
+Tracking and Data Relay Satellites (TDRS) (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(B)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(B).glb|Satellites
+Tracking and Data Relay Satellites (TDRS) (C)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C).glb|Satellites
+Tracking and Data Relay Satellites (TDRS) (D)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(D)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(D).glb|Satellites
+Geostationary Operational Environmental Satellites|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Geostationary%20Operational%20Environmental%20Satellites/Geostationary%20Operational%20Environmental%20Satellites.glb|Satellites
+Polar Operational Environmental Satellite (POES)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Polar%20Operational%20Environmental%20Satellite%20(POES)/Polar%20Operational%20Environmental%20Satellite%20(POES).glb|Satellites
+
+## ASTEROIDS & SMALL BODIES
+1999 RQ36 asteroid|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/1999%20RQ36%20asteroid/1999%20RQ36%20asteroid.glb|Asteroids
+
+## ROCKETS & LAUNCH VEHICLES
+Saturn V|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Saturn%20V/Saturn%20V.glb|Rockets
+Space Launch System Block 1|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Launch%20System%20Block%201/Space%20Launch%20System%20Block%201.glb|Rockets
+Ares 1 (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ares%201%20(A)/Ares%201%20(A).glb|Rockets
+Ares 1 (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ares%201%20(B)/Ares%201%20(B).glb|Rockets
+Explorer Jupiter-C Rocket|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Explorer%20Jupiter-C%20Rocket/Explorer%20Jupiter-C%20Rocket.glb|Rockets
+
+## SPACE SHUTTLE
+Space Shuttle (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(A)/Space%20Shuttle%20(A).glb|Shuttle
+Space Shuttle (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(B)/Space%20Shuttle%20(B).glb|Shuttle
+Space Shuttle (C)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(C)/Space%20Shuttle%20(C).glb|Shuttle
+Space Shuttle (D)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(D)/Space%20Shuttle%20(D).glb|Shuttle
+Space Shuttle Remote Manipulator System (Canadarm)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Remote%20Manipulator%20System%20(Canadarm)/Space%20Shuttle%20Remote%20Manipulator%20System%20(Canadarm).glb|Shuttle
+
+## CAPSULES & MODULES
+Apollo Lunar Module|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Apollo%20Lunar%20Module/Apollo%20Lunar%20Module.glb|Capsules
+Apollo Soyuz|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Apollo%20Soyuz/Apollo%20Soyuz.glb|Capsules
+Gemini|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gemini/Gemini.glb|Capsules
+Atlas 6 (Friendship 7)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Atlas%206%20(Friendship%207)/Atlas%206%20(Friendship%207).glb|Capsules
+Atlas 7 (Aurora 7)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Atlas%207%20(Aurora%207)/Atlas%207%20(Aurora%207).glb|Capsules
+Atlas 9 (Faith 7)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Atlas%209%20(Faith%207)/Atlas%209%20(Faith%207).glb|Capsules
+Redstone 3 (Freedom 7)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Redstone%203%20(Freedom%207)/Redstone%203%20(Freedom%207).glb|Capsules
+
+## SPACESUITS
+Advanced Crew Escape Suit|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Advanced%20Crew%20Escape%20Suit/Advanced%20Crew%20Escape%20Suit.glb|Equipment
+Extravehicular Mobility Unit|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Extravehicular%20Mobility%20Unit/Extravehicular%20Mobility%20Unit.glb|Equipment
+Gemini Spacesuit|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gemini%20Spacesuit/Gemini%20Spacesuit.glb|Equipment
+Mercury Spacesuit|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mercury%20Spacesuit/Mercury%20Spacesuit.glb|Equipment
+Mark III Spacesuit|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mark%20III%20Spacesuit/Mark%20III%20Spacesuit.glb|Equipment
+Z2 Spacesuit|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Z2%20Spacesuit/Z2%20Spacesuit.glb|Equipment
+
+## TOOLS & EQUIPMENT
+Astronaut|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Astronaut/Astronaut.glb|Equipment
+Astronaut Glove|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Astronaut%20Glove/Astronaut%20Glove.glb|Equipment
+Hammer|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hammer/Hammer.glb|Equipment
+Wrench|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wrench/Wrench.glb|Equipment
+Pistol Grip Tool|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Pistol%20Grip%20Tool/Pistol%20Grip%20Tool.glb|Equipment
+Ratchet|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ratchet/Ratchet.glb|Equipment
+Grease Gun|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Grease%20Gun/Grease%20gun.glb|Equipment
+
+## ROVERS & MOBILITY
+Robonaut 2|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Robonaut%202/Robonaut%202.glb|Equipment
+Regolith Advanced Surface Systems Operations Robot (RASSOR)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Regolith%20Advanced%20Surface%20Systems%20Operations%20Robot%20(RASSOR)/Regolith%20Advanced%20Surface%20Systems%20Operations%20Robot%20(RASSOR).glb|Equipment
+Space Exploration Vehicle|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Exploration%20Vehicle/Space%20Exploration%20Vehicle.glb|Equipment
+
+## SCIENTIFIC INSTRUMENTS
+Cosmic Origins Spectrograph|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cosmic%20Origins%20Spectrograph/Cosmic%20Origins%20Spectrograph.glb|Instruments
+Wide Field Planetary Camera|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wide%20Field%20Planetary%20Camera/Wide%20Field%20Planetary%20Camera.glb|Instruments
+Infrared Camera|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Infrared%20Camera/Infrared%20Camera.glb|Instruments
+
+## SATELLITE CONSTELLATIONS
+Gravity Recovery and Climate Experiment (GRACE) (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gravity%20Recovery%20and%20Climate%20Experiment%20(GRACE)%20(A)/Gravity%20Recovery%20and%20Climate%20Experiment%20(GRACE)%20(A).glb|Satellites
+Gravity Recovery and Climate Experiment (GRACE) (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gravity%20Recovery%20and%20Climate%20Experiment%20(GRACE)%20(B)/Gravity%20Recovery%20and%20Climate%20Experiment%20(GRACE)%20(B).glb|Satellites
+Magnetospheric Multiscale (MMS) (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Magnetospheric%20Multiscale%20(MMS)%20(A)/Magnetospheric%20Multiscale%20(MMS)%20(A).glb|Satellites
+Magnetospheric Multiscale (MMS) (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Magnetospheric%20Multiscale%20(MMS)%20(B)/Magnetospheric%20Multiscale%20(MMS)%20(B).glb|Satellites
+Solar TErrestrial RElations Observatory (STEREO)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20TErrestrial%20RElations%20Observatory%20(STEREO)/Solar%20TErrestrial%20RElations%20Observatory%20(STEREO).glb|Satellites
+
+## OTHER SATELLITES
+Transiting Exoplanet Survey Satellite (TESS) (A)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(A)/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(A).glb|Satellites
+Transiting Exoplanet Survey Satellite (TESS) (B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(B)/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(B).glb|Satellites
+Advanced Composition Explorer|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Advanced%20Composition%20Explorer/Advanced%20Composition%20Explorer.glb|Satellites
+Interstellar Boundary Explorer (IBEX)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Interstellar%20Boundary%20Explorer%20(IBEX)/Interstellar%20Boundary%20Explorer%20(IBEX).glb|Satellites
+Swift|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Swift/Swift.glb|Satellites
+Fermi Gamma-ray Large Area Space Telescope|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Fermi%20Gamma-ray%20Large%20Area%20Space%20Telescope/Fermi%20Gamma-ray%20Large%20Area%20Space%20Telescope.glb|Satellites
+Hinode (Solar-B)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hinode%20(Solar-B)/Hinode%20(Solar-B).glb|Satellites
+Suzaku|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Suzaku/Suzaku.glb|Satellites
+HESSI-RHESSI|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/HESSI-RHESSI/HESSI-RHESSI.glb|Satellites
+Gamma Ray Observatory|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gamma%20Ray%20Observatory/Gamma%20Ray%20Observatory.glb|Satellites
+
+## CUBESATS
+CubeSat - 1 RU Generic|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%201%20RU%20Generic/CubeSat%20-%201%20RU%20Generic.glb|CubeSats
+CubeSat - 2 RU Generic|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%202%20RU%20Generic/CubeSat%20-%202%20RU%20Generic.glb|CubeSats
+CubeSat - ICECube|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%20ICECube/CubeSat%20-%20ICECube.glb|CubeSats
+CubeSat - MiRaTa|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%20MiRaTa/CubeSat%20-%20MiRaTa.glb|CubeSats
+
+## GROUND EQUIPMENT & FACILITIES
+Vehicle Assembly Building (VAB)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Vehicle%20Assembly%20Building%20(VAB)/Vehicle%20Assembly%20Building%20(VAB).glb|Facilities
+Headquarters Building|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Headquarters%20Building/Headquarters%20Building.glb|Facilities
+JSC Mission Control Room|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/JSC%20Mission%20Control%20Room/JSC%20Mission%20Control%20Room.glb|Facilities
+Mobile Launcher (assembled)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mobile%20Launcher/Mobile%20Launcher%20(assembled).glb|Facilities
+Crawler|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Crawler/Crawler.glb|Facilities
+Gantry|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gantry/Gantry.glb|Facilities
+
+## EXPERIMENTAL & FUTURE CONCEPTS
+Advanced Technology Large-Aperture Space Telescope (ATLAST)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Advanced%20Technology%20Large-Aperture%20Space%20Telescope%20(ATLAST)/Advanced%20Technology%20Large-Aperture%20Space%20Telescope%20(ATLAST).glb|Concepts
+Constellation-X|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Constellation-X/Constellation-X.glb|Concepts
+International X-ray Observatory|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20X-ray%20Observatory/International%20X-ray%20Observatory.glb|Concepts
+Solar Sail Concept|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20Sail%20Concept/Solar%20Sail%20Concept.glb|Concepts
+X-57|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/X-57/X-57.glb|Concepts
+Global Hawk|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Global%20Hawk/Global%20Hawk.glb|Concepts
+Firefly|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Firefly/Firefly.glb|Concepts
+Argo|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Argo/Argo.glb|Concepts
+
+## HISTORICAL SPACECRAFT
+Deep Space Climate Observatory (DSCOVR) (Triana)|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Climate%20Observatory%20(DSCOVR)%20(Triana)/Deep%20Space%20Climate%20Observatory%20(DSCOVR)%20(Triana).glb|Historical
+Polar|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Polar/Polar.glb|Historical
+Wind|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wind/Wind.glb|Historical
+Ulysses|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ulysses/Ulysses.glb|Historical
+Cluster|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cluster/Cluster.glb|Historical
+Cluster II|https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cluster%20II/Cluster%20II.glb|Historical
+
+## INSTRUCTIONS FOR USE
+
+# 1. Copy any URL from this file
+# 2. Use in your React component with Three.js loader
+# 3. Format is: Model Name | URL | Category
+# 4. All URLs point to NASA GitHub raw content
+# 5. GLB files are optimized for web viewing
+
+## EXAMPLE USAGE IN CODE:
+
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+const models = [
+  {
+    name: '70-Meter Dish',
+    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/70-meter%20Dish/70%20meter%20dish.glb',
+    category: 'Antennas'
+  },
+  {
+    name: 'Hubble Space Telescope',
+    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20Space%20Telescope%20(A)/Hubble%20Space%20Telescope%20(A).glb',
+    category: 'Telescopes'
+  },
+  // ... more models
+];
+
+const loader = new GLTFLoader();
+loader.load(models[0].url, (gltf) => {
+  scene.add(gltf.scene);
+});
+
+## NOTES:
+
+- Total Models: 200+
+- Format: All GLB (Binary GLTF)
+- Source: NASA GitHub Repository
+- License: Public Domain / NASA Creative Commons
+- Compatibility: Works with Three.js, Babylon.js, etc.
+- No additional setup required

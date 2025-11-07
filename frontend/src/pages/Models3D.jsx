@@ -1,222 +1,350 @@
-import { useState, useMemo } from 'react';
-import ModelViewerR3F from '../components/ModelViewerR3F';
+import { useMemo, useState } from "react";
+import ModelViewerR3F from "../components/ModelViewerR3F";
 
+// Comprehensive NASA 3D Models Database
 const NASA_3D_MODELS = [
-  {
-    id: 1,
-    name: '70-Meter Dish',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/70-meter%20Dish/70%20meter%20dish.glb',
-    category: 'Antennas',
-    description: 'Deep Space Network 70-meter antenna dish used for planetary communications',
-    center: 'Jet Propulsion Laboratory',
-  },
-  {
-    id: 2,
-    name: 'International Space Station',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20Space%20Station%20(ISS)%20(A)/ISS_32_with_vehicles_22-Sep-2011.glb',
-    category: 'Spacecraft',
-    description: 'The orbital research laboratory maintained in low-Earth orbit',
-    center: 'Johnson Space Center',
-  },
-  {
-    id: 3,
-    name: 'Saturn V Rocket',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Saturn%20V/Saturn%20V%20rocket.glb',
-    category: 'Rockets',
-    description: 'Legendary rocket that took astronauts to the Moon',
-    center: 'Marshall Space Flight Center',
-  },
-  {
-    id: 4,
-    name: 'Space Shuttle',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(A)/Space%20Shuttle.glb',
-    category: 'Spacecraft',
-    description: 'Reusable space shuttle for orbital missions',
-    center: 'Johnson Space Center',
-  },
-  {
-    id: 5,
-    name: 'Cassini-Huygens',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(A)/Cassini-Huygens_Deorbit_5.glb',
-    category: 'Spacecraft',
-    description: 'Spacecraft that explored Saturn and its moons for 13 years',
-    center: 'Jet Propulsion Laboratory',
-  },
-  {
-    id: 6,
-    name: 'Apollo Lunar Module',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Apollo%20Lunar%20Module/Apollo%20Lunar%20Module.glb',
-    category: 'Spacecraft',
-    description: 'Historic spacecraft that landed astronauts on the Moon',
-    center: 'Johnson Space Center',
-  },
-  {
-    id: 7,
-    name: 'Space Suit (Extravehicular)',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Extravehicular%20Mobility%20Unit/EMU.glb',
-    category: 'Equipment',
-    description: 'Pressurized suit worn by astronauts during spacewalks',
-    center: 'Johnson Space Center',
-  },
-  {
-    id: 8,
-    name: 'Skylab Space Station',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Skylab/Skylab.glb',
-    category: 'Spacecraft',
-    description: 'Early space station used for scientific experiments',
-    center: 'Marshall Space Flight Center',
-  },
-  {
-    id: 9,
-    name: 'Voyager Probe',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Voyager%20Probe%20(A)/Voyager.glb',
-    category: 'Spacecraft',
-    description: 'Interstellar probe exploring beyond our solar system',
-    center: 'Jet Propulsion Laboratory',
-  },
-  {
-    id: 10,
-    name: 'Pioneer 10 Probe',
-    url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Pioneer%2010/Pioneer%2010.glb',
-    category: 'Spacecraft',
-    description: 'Historic deep space probe launched in 1972',
-    center: 'Ames Research Center',
-  },
+  // ANTENNAS & DISHES
+  { id: 1, name: '70-Meter Dish', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/70-meter%20Dish/70%20meter%20dish.glb', category: 'Antennas', description: 'Deep Space Network 70-meter antenna dish used for planetary communications', center: 'Jet Propulsion Laboratory' },
+  { id: 2, name: 'Deep Space Network 34-meter', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Network%2034-meter/Deep%20Space%20Network%2034-meter.glb', category: 'Antennas', description: 'DSN 34-meter antenna for space communications', center: 'Jet Propulsion Laboratory' },
+  { id: 3, name: 'Deep Space Network 70-meter', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Network%2070-meter/Deep%20Space%20Network%2070-meter.glb', category: 'Antennas', description: 'Large DSN antenna for deep space communication', center: 'Jet Propulsion Laboratory' },
+  { id: 4, name: 'Tall Dish', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tall%20Dish/Tall%20Dish%20(dish).glb', category: 'Antennas', description: 'Tall antenna dish structure', center: 'Jet Propulsion Laboratory' },
+  { id: 5, name: 'Radome', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Radome/Radome.glb', category: 'Antennas', description: 'Protective radome covering for antennas', center: 'Jet Propulsion Laboratory' },
+
+  // TELESCOPES & OBSERVATORIES
+  { id: 6, name: 'Hubble Space Telescope (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20Space%20Telescope%20(A)/Hubble%20Space%20Telescope%20(A).glb', category: 'Telescopes', description: 'Orbiting observatory revealing universe secrets', center: 'Goddard Space Flight Center' },
+  { id: 7, name: 'Hubble Space Telescope (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20Space%20Telescope%20(B)/Hubble%20Space%20Telescope%20(B).glb', category: 'Telescopes', description: 'Alternative Hubble model view', center: 'Goddard Space Flight Center' },
+  { id: 8, name: 'James Webb Space Telescope (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/James%20Webb%20Space%20Telescope%20(A)/James%20Webb%20Space%20Telescope%20(A).glb', category: 'Telescopes', description: 'Next-generation infrared space telescope', center: 'Goddard Space Flight Center' },
+  { id: 9, name: 'James Webb Space Telescope (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/James%20Webb%20Space%20Telescope%20(B)/James%20Webb%20Space%20Telescope%20(B).glb', category: 'Telescopes', description: 'JWST alternative configuration', center: 'Goddard Space Flight Center' },
+  { id: 10, name: 'Chandra X-ray Observatory', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Chandra%20X-ray%20Observatory/Chandra%20X-ray%20Observatory.glb', category: 'Telescopes', description: 'X-ray observatory studying cosmic phenomena', center: 'Marshall Space Flight Center' },
+  { id: 11, name: 'Spitzer Space Telescope', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Spitzer%20Space%20Telescope/Spitzer%20Space%20Telescope.glb', category: 'Telescopes', description: 'Infrared space observatory', center: 'Jet Propulsion Laboratory' },
+  { id: 12, name: 'Solar Dynamics Observatory', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20Dynamics%20Observatory/Solar%20Dynamics%20Observatory.glb', category: 'Telescopes', description: 'Studies the Sun and its dynamic processes', center: 'Goddard Space Flight Center' },
+  { id: 13, name: 'Solar and Heliospheric Observatory', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20and%20Heliospheric%20Observatory/Solar%20and%20Heliospheric%20Observatory.glb', category: 'Telescopes', description: 'Joint ESA/NASA solar observatory', center: 'Goddard Space Flight Center' },
+  { id: 14, name: 'Kepler (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Kepler%20(A)/Kepler%20(A).glb', category: 'Telescopes', description: 'Exoplanet discovery mission', center: 'Ames Research Center' },
+  { id: 15, name: 'Kepler (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Kepler%20(B)/Kepler%20(B).glb', category: 'Telescopes', description: 'Kepler Space Telescope alternative', center: 'Ames Research Center' },
+  { id: 16, name: 'Nancy Grace Roman Space Telescope (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Nancy%20Grace%20Roman%20Space%20Telescope%20(A)/Nancy%20Grace%20Roman%20Space%20Telescope%20(A).glb', category: 'Telescopes', description: 'Future wide-field infrared telescope', center: 'Goddard Space Flight Center' },
+
+  // SPACE STATIONS
+  { id: 17, name: 'International Space Station (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20Space%20Station%20(ISS)%20(A)/International%20Space%20Station%20(ISS)%20(A).glb', category: 'Space Stations', description: 'The orbital research laboratory in low-Earth orbit', center: 'Johnson Space Center' },
+  { id: 18, name: 'International Space Station (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20Space%20Station%20(ISS)%20(B)/International%20Space%20Station%20(ISS)%20(B).glb', category: 'Space Stations', description: 'ISS alternative representation', center: 'Johnson Space Center' },
+  { id: 19, name: 'Skylab Space Station', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Skylab/Skylab.glb', category: 'Space Stations', description: 'Early US space station', center: 'Marshall Space Flight Center' },
+  { id: 20, name: 'Mir Space Station', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mir/Mir.glb', category: 'Space Stations', description: 'Russian orbital space station', center: 'Johnson Space Center' },
+  { id: 21, name: 'Gateway Core', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gateway/Gateway%20Core.glb', category: 'Space Stations', description: 'Lunar Gateway station core module', center: 'Marshall Space Flight Center' },
+
+  // SPACECRAFT & PROBES
+  { id: 22, name: 'Cassini-Huygens (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(A)/Cassini-Huygens%20(A).glb', category: 'Spacecraft', description: 'Saturn exploration spacecraft', center: 'Jet Propulsion Laboratory' },
+  { id: 23, name: 'Cassini-Huygens (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(B)/Cassini-Huygens%20(B).glb', category: 'Spacecraft', description: 'Cassini alternative configuration', center: 'Jet Propulsion Laboratory' },
+  { id: 24, name: 'Parker Solar Probe', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Parker%20Solar%20Probe/Parker%20Solar%20Probe.glb', category: 'Spacecraft', description: 'Sun-studying mission touching solar corona', center: 'Johns Hopkins University APL' },
+  { id: 25, name: 'Juno (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Juno%20(A)/Juno%20(A).glb', category: 'Spacecraft', description: 'Jupiter orbital mission', center: 'Jet Propulsion Laboratory' },
+  { id: 26, name: 'Juno (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Juno%20(B)/Juno%20(B).glb', category: 'Spacecraft', description: 'Juno spacecraft alternative', center: 'Jet Propulsion Laboratory' },
+  { id: 27, name: 'Dawn', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Dawn/Dawn.glb', category: 'Spacecraft', description: 'Asteroid/dwarf planet explorer', center: 'Jet Propulsion Laboratory' },
+  { id: 28, name: 'Rosetta', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Rosetta/Rosetta.glb', category: 'Spacecraft', description: 'Comet exploration spacecraft', center: 'European Space Agency' },
+  { id: 29, name: 'Stardust', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Stardust/Stardust.glb', category: 'Spacecraft', description: 'Comet sample return mission', center: 'Jet Propulsion Laboratory' },
+  { id: 30, name: 'Deep Impact', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/Deep%20Impact.glb', category: 'Spacecraft', description: 'Comet impact mission', center: 'Jet Propulsion Laboratory' },
+  { id: 31, name: 'Galileo', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Galileo/Galileo.glb', category: 'Spacecraft', description: 'Jupiter orbital and probe mission', center: 'Jet Propulsion Laboratory' },
+  { id: 32, name: 'Magellan', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Magellan/Magellan.glb', category: 'Spacecraft', description: 'Venus mapping spacecraft', center: 'Jet Propulsion Laboratory' },
+  { id: 33, name: 'MESSENGER', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/MErcury%20Surface%2C%20Space%20ENvironment%2C%20GEochemistry%2C%20and%20Ranging%20(MESSENGER)/MErcury%20Surface%2C%20Space%20ENvironment%2C%20GEochemistry%2C%20and%20Ranging%20(MESSENGER).glb', category: 'Spacecraft', description: 'Mercury orbital mission', center: 'Johns Hopkins University APL' },
+  { id: 34, name: 'Voyager Probe (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Voyager%20Probe%20(A)/Voyager%20Probe%20(A).glb', category: 'Spacecraft', description: 'Interstellar probe exploring beyond solar system', center: 'Jet Propulsion Laboratory' },
+  { id: 35, name: 'Voyager Probe (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Voyager%20Probe%20(B)/Voyager%20Probe%20(B).glb', category: 'Spacecraft', description: 'Voyager alternative model', center: 'Jet Propulsion Laboratory' },
+  { id: 36, name: 'Pioneer 10', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Pioneer%2010/Pioneer%2010.glb', category: 'Spacecraft', description: 'Historic deep space probe', center: 'Ames Research Center' },
+  { id: 37, name: 'Deep Space 1', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%201/Deep%20Space%201.glb', category: 'Spacecraft', description: 'Advanced technology demonstration mission', center: 'Jet Propulsion Laboratory' },
+  { id: 38, name: 'NEAR Shoemaker', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/NEAR%20Shoemaker/NEAR%20Shoemaker.glb', category: 'Spacecraft', description: 'Asteroid reconnaissance mission', center: 'Johns Hopkins University APL' },
+  { id: 39, name: 'OSIRIS-REx', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Origins%2C%20Spectral%20Interpretation%2C%20Resource%20Identification%2C%20and%20Security%20-%20Regolith%20Explorer%20(OSIRIS-REx)/OSIRIS-REx.glb', category: 'Spacecraft', description: 'Asteroid sample return mission', center: 'Goddard Space Flight Center' },
+
+  // MARS MISSIONS
+  { id: 40, name: 'Curiosity Rover (MSL)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Curiosity%20Rover%20(MSL)/Curiosity%20Rover%20(MSL)%20(Clean).glb', category: 'Mars', description: 'Mars Science Laboratory rover', center: 'Jet Propulsion Laboratory' },
+  { id: 41, name: 'Mars 2020 Perseverance Rover', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%202020%20Perseverance%20Rover/Mars%202020%20Perseverance%20Rover.glb', category: 'Mars', description: 'Mars rover seeking signs of ancient microbial life', center: 'Jet Propulsion Laboratory' },
+  { id: 42, name: 'Ingenuity Mars Helicopter', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ingenuity%20Mars%20Helicopter/Ingenuity%20Mars%20Helicopter.glb', category: 'Mars', description: 'First aircraft to fly on another planet', center: 'Jet Propulsion Laboratory' },
+  { id: 43, name: 'Mars Exploration Rover - Opportunity', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B).glb', category: 'Mars', description: 'MER-B solar-powered rover', center: 'Jet Propulsion Laboratory' },
+  { id: 44, name: 'Viking Lander', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Viking%20Lander/Viking%20Lander.glb', category: 'Mars', description: 'First spacecraft to land safely on Mars', center: 'Jet Propulsion Laboratory' },
+  { id: 45, name: 'Mars Global Surveyor', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Global%20Surveyor/Mars%20Global%20Surveyor.glb', category: 'Mars', description: 'Mars orbital mapper spacecraft', center: 'Jet Propulsion Laboratory' },
+  { id: 46, name: 'Mars Odyssey', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Odyssey/Mars%20Odyssey.glb', category: 'Mars', description: 'Mars thermal imaging orbiter', center: 'Jet Propulsion Laboratory' },
+  { id: 47, name: 'Mars Reconnaissance Orbiter (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Reconnaissance%20Orbiter%20(MRO)%20(A)/Mars%20Reconnaissance%20Orbiter%20(MRO)%20(A).glb', category: 'Mars', description: 'Mars high-resolution imaging orbiter', center: 'Jet Propulsion Laboratory' },
+  { id: 48, name: 'Mars Reconnaissance Orbiter (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Reconnaissance%20Orbiter%20(MRO)%20(B)/Mars%20Reconnaissance%20Orbiter%20(MRO)%20(B).glb', category: 'Mars', description: 'MRO alternative view', center: 'Jet Propulsion Laboratory' },
+  { id: 49, name: 'Mars Atmosphere and Volatile EvolutioN (MAVEN)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Atmosphere%20and%20Volatile%20EvolutioN%20(MAVEN)%20(A)/Mars%20Atmosphere%20and%20Volatile%20EvolutioN%20(MAVEN)%20(A).glb', category: 'Mars', description: 'Mars atmospheric mission', center: 'Goddard Space Flight Center' },
+
+  // SATELLITES & EARTH OBSERVATION
+  { id: 50, name: 'Terra', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Terra/Terra.glb', category: 'Satellites', description: 'Earth observing satellite', center: 'Goddard Space Flight Center' },
+  { id: 51, name: 'Aqua (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aqua%20(A)/Aqua%20(A).glb', category: 'Satellites', description: 'Water cycle and climate monitoring', center: 'Goddard Space Flight Center' },
+  { id: 52, name: 'Aqua (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aqua%20(B)/Aqua%20(B).glb', category: 'Satellites', description: 'Aqua satellite alternative', center: 'Goddard Space Flight Center' },
+  { id: 53, name: 'Aqua (C)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aqua%20(C)/Aqua%20(C).glb', category: 'Satellites', description: 'Aqua configuration variant', center: 'Goddard Space Flight Center' },
+  { id: 54, name: 'Aura (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aura%20(A)/Aura%20(A).glb', category: 'Satellites', description: 'Atmospheric chemistry satellite', center: 'Goddard Space Flight Center' },
+  { id: 55, name: 'Landsat 7', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%207/Landsat%207.glb', category: 'Satellites', description: 'Landsat Earth observation satellite', center: 'Goddard Space Flight Center' },
+  { id: 56, name: 'Landsat 8', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%208/Landsat%208.glb', category: 'Satellites', description: 'Advanced Landsat imaging satellite', center: 'Goddard Space Flight Center' },
+  { id: 57, name: 'SeaStar', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/SeaStar/SeaStar.glb', category: 'Satellites', description: 'Ocean color monitoring satellite', center: 'Goddard Space Flight Center' },
+  { id: 58, name: 'Quick Scatterometer (QuikSCAT)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Quick%20Scatterometer%20(QuikSCAT)/Quick%20Scatterometer%20(QuikSCAT).glb', category: 'Satellites', description: 'Ocean wind measurement satellite', center: 'Jet Propulsion Laboratory' },
+  { id: 59, name: 'Orbiting Carbon Observatory 2', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Orbiting%20Carbon%20Observatory%20(OCO)%202/Orbiting%20Carbon%20Observatory%20(OCO)%202.glb', category: 'Satellites', description: 'Atmospheric carbon dioxide monitor', center: 'Jet Propulsion Laboratory' },
+  { id: 60, name: 'Global Precipitation Measurement', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Global%20Precipitation%20Measurement/Global%20Precipitation%20Measurement.glb', category: 'Satellites', description: 'Precipitation measurement satellite', center: 'Goddard Space Flight Center' },
+  { id: 61, name: 'Tropical Rainfall Measuring Mission', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tropical%20Rainfall%20Measuring%20Mission%20(TRMM)/Tropical%20Rainfall%20Measuring%20Mission%20(TRMM).glb', category: 'Satellites', description: 'Tropical rainfall monitoring mission', center: 'Goddard Space Flight Center' },
+  { id: 62, name: 'Suomi NPP', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Suomi%20National%20Polar-orbiting%20Partnership%20(Suomi%20NPP)/Suomi%20National%20Polar-orbiting%20Partnership%20(Suomi%20NPP).glb', category: 'Satellites', description: 'Polar-orbiting weather satellite', center: 'Goddard Space Flight Center' },
+  { id: 63, name: 'Jason 1', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Jason%201/Jason%201.glb', category: 'Satellites', description: 'Ocean altimetry satellite', center: 'Jet Propulsion Laboratory' },
+  { id: 64, name: 'TOPEX-Poseidon', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/TOPEX-Poseidon/TOPEX-Poseidon.glb', category: 'Satellites', description: 'Ocean surface topography mission', center: 'Jet Propulsion Laboratory' },
+  { id: 65, name: 'CloudSat (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CloudSat%20(A)/CloudSat%20(A).glb', category: 'Satellites', description: 'Cloud profiling radar satellite', center: 'Jet Propulsion Laboratory' },
+  { id: 66, name: 'CALIPSO', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cloud-Aerosol%20Lidar%20and%20Infrared%20Pathfinder%20Satellite%20(CALIPSO)/Cloud-Aerosol%20Lidar%20and%20Infrared%20Pathfinder%20Satellite%20(CALIPSO).glb', category: 'Satellites', description: 'Cloud and aerosol lidar satellite', center: 'Goddard Space Flight Center' },
+
+  // TRACKING SATELLITES
+  { id: 67, name: 'Tracking and Data Relay Satellites (TDRS) (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(A)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(A).glb', category: 'Satellites', description: 'Communication relay satellite', center: 'Goddard Space Flight Center' },
+  { id: 68, name: 'Geostationary Operational Environmental Satellites', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Geostationary%20Operational%20Environmental%20Satellites/Geostationary%20Operational%20Environmental%20Satellites.glb', category: 'Satellites', description: 'Geostationary weather satellite', center: 'Goddard Space Flight Center' },
+  { id: 69, name: 'Polar Operational Environmental Satellite', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Polar%20Operational%20Environmental%20Satellite%20(POES)/Polar%20Operational%20Environmental%20Satellite%20(POES).glb', category: 'Satellites', description: 'Polar-orbiting weather satellite', center: 'Goddard Space Flight Center' },
+
+  // ASTEROIDS
+  { id: 70, name: '1999 RQ36 Asteroid', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/1999%20RQ36%20asteroid/1999%20RQ36%20asteroid.glb', category: 'Asteroids', description: 'Near-Earth asteroid Bennu', center: 'Goddard Space Flight Center' },
+
+  // ROCKETS & LAUNCH VEHICLES
+  { id: 71, name: 'Saturn V', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Saturn%20V/Saturn%20V.glb', category: 'Rockets', description: 'Legendary rocket that took astronauts to the Moon', center: 'Marshall Space Flight Center' },
+  { id: 72, name: 'Space Launch System Block 1', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Launch%20System%20Block%201/Space%20Launch%20System%20Block%201.glb', category: 'Rockets', description: 'Next-generation heavy lift launch vehicle', center: 'Marshall Space Flight Center' },
+  { id: 73, name: 'Ares 1 (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ares%201%20(A)/Ares%201%20(A).glb', category: 'Rockets', description: 'Ares crew launch vehicle', center: 'Marshall Space Flight Center' },
+  { id: 74, name: 'Explorer Jupiter-C Rocket', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Explorer%20Jupiter-C%20Rocket/Explorer%20Jupiter-C%20Rocket.glb', category: 'Rockets', description: 'Early American launch vehicle', center: 'Marshall Space Flight Center' },
+
+  // SPACE SHUTTLE
+  { id: 75, name: 'Space Shuttle (A)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(A)/Space%20Shuttle%20(A).glb', category: 'Shuttle', description: 'Reusable space shuttle orbiter', center: 'Johnson Space Center' },
+  { id: 76, name: 'Space Shuttle (B)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(B)/Space%20Shuttle%20(B).glb', category: 'Shuttle', description: 'Space Shuttle alternative configuration', center: 'Johnson Space Center' },
+  { id: 77, name: 'Space Shuttle (C)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(C)/Space%20Shuttle%20(C).glb', category: 'Shuttle', description: 'Space Shuttle variant', center: 'Johnson Space Center' },
+  { id: 78, name: 'Space Shuttle (D)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(D)/Space%20Shuttle%20(D).glb', category: 'Shuttle', description: 'Space Shuttle detailed model', center: 'Johnson Space Center' },
+  { id: 79, name: 'Space Shuttle Canadarm', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Remote%20Manipulator%20System%20(Canadarm)/Space%20Shuttle%20Remote%20Manipulator%20System%20(Canadarm).glb', category: 'Shuttle', description: 'Shuttle robotic arm', center: 'Johnson Space Center' },
+
+  // CAPSULES & MODULES
+  { id: 80, name: 'Apollo Lunar Module', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Apollo%20Lunar%20Module/Apollo%20Lunar%20Module.glb', category: 'Capsules', description: 'Historic spacecraft that landed astronauts on the Moon', center: 'Johnson Space Center' },
+  { id: 81, name: 'Apollo Soyuz', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Apollo%20Soyuz/Apollo%20Soyuz.glb', category: 'Capsules', description: 'Historic US-Soviet joint mission', center: 'Johnson Space Center' },
+  { id: 82, name: 'Gemini', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gemini/Gemini.glb', category: 'Capsules', description: 'Gemini spacecraft for orbital missions', center: 'Johnson Space Center' },
+  { id: 83, name: 'Atlas 6 (Friendship 7)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Atlas%206%20(Friendship%207)/Atlas%206%20(Friendship%207).glb', category: 'Capsules', description: 'John Glenn\'s Mercury capsule', center: 'Johnson Space Center' },
+  { id: 84, name: 'Redstone 3 (Freedom 7)', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Redstone%203%20(Freedom%207)/Redstone%203%20(Freedom%207).glb', category: 'Capsules', description: 'Alan Shepard\'s suborbital capsule', center: 'Johnson Space Center' },
+
+  // SPACESUITS & EQUIPMENT
+  { id: 85, name: 'Advanced Crew Escape Suit', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Advanced%20Crew%20Escape%20Suit/Advanced%20Crew%20Escape%20Suit.glb', category: 'Equipment', description: 'Modern crew escape suit', center: 'Johnson Space Center' },
+  { id: 86, name: 'Extravehicular Mobility Unit', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Extravehicular%20Mobility%20Unit/Extravehicular%20Mobility%20Unit.glb', category: 'Equipment', description: 'Pressurized suit for spacewalks', center: 'Johnson Space Center' },
+  { id: 87, name: 'Gemini Spacesuit', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gemini%20Spacesuit/Gemini%20Spacesuit.glb', category: 'Equipment', description: 'Historic Gemini-era spacesuit', center: 'Johnson Space Center' },
+  { id: 88, name: 'Mercury Spacesuit', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mercury%20Spacesuit/Mercury%20Spacesuit.glb', category: 'Equipment', description: 'Early Mercury program spacesuit', center: 'Johnson Space Center' },
+  { id: 89, name: 'Mark III Spacesuit', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mark%20III%20Spacesuit/Mark%20III%20Spacesuit.glb', category: 'Equipment', description: 'Advanced spacesuit prototype', center: 'Johnson Space Center' },
+  { id: 90, name: 'Z2 Spacesuit', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Z2%20Spacesuit/Z2%20Spacesuit.glb', category: 'Equipment', description: 'Next-generation spacesuit design', center: 'Johnson Space Center' },
+
+  // TOOLS & EQUIPMENT
+  { id: 91, name: 'Astronaut', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Astronaut/Astronaut.glb', category: 'Equipment', description: 'Astronaut figure model', center: 'Johnson Space Center' },
+  { id: 92, name: 'Hammer', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hammer/Hammer.glb', category: 'Equipment', description: 'EVA hammer tool', center: 'Johnson Space Center' },
+  { id: 93, name: 'Wrench', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wrench/Wrench.glb', category: 'Equipment', description: 'EVA wrench tool', center: 'Johnson Space Center' },
+  { id: 94, name: 'Pistol Grip Tool', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Pistol%20Grip%20Tool/Pistol%20Grip%20Tool.glb', category: 'Equipment', description: 'Power tool for spacewalks', center: 'Johnson Space Center' },
+  { id: 95, name: 'Ratchet', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ratchet/Ratchet.glb', category: 'Equipment', description: 'EVA ratchet tool', center: 'Johnson Space Center' },
+
+  // ROVERS & ROBOTS
+  { id: 96, name: 'Robonaut 2', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Robonaut%202/Robonaut%202.glb', category: 'Equipment', description: 'Humanoid robot for space operations', center: 'Johnson Space Center' },
+  { id: 97, name: 'RASSOR', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Regolith%20Advanced%20Surface%20Systems%20Operations%20Robot%20(RASSOR)/Regolith%20Advanced%20Surface%20Systems%20Operations%20Robot%20(RASSOR).glb', category: 'Equipment', description: 'Lunar mining robot concept', center: 'Kennedy Space Center' },
+  { id: 98, name: 'Space Exploration Vehicle', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Exploration%20Vehicle/Space%20Exploration%20Vehicle.glb', category: 'Equipment', description: 'Lunar surface exploration vehicle', center: 'Johnson Space Center' },
+
+  // CUBESATS
+  { id: 99, name: 'CubeSat - 1 RU Generic', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%201%20RU%20Generic/CubeSat%20-%201%20RU%20Generic.glb', category: 'CubeSats', description: 'Generic 1U CubeSat model', center: 'Ames Research Center' },
+  { id: 100, name: 'CubeSat - 2 RU Generic', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%202%20RU%20Generic/CubeSat%20-%202%20RU%20Generic.glb', category: 'CubeSats', description: 'Generic 2U CubeSat model', center: 'Ames Research Center' },
+
+  // GROUND FACILITIES
+  { id: 101, name: 'Vehicle Assembly Building', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Vehicle%20Assembly%20Building%20(VAB)/Vehicle%20Assembly%20Building%20(VAB).glb', category: 'Facilities', description: 'Massive vehicle assembly facility', center: 'Kennedy Space Center' },
+  { id: 102, name: 'Headquarters Building', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Headquarters%20Building/Headquarters%20Building.glb', category: 'Facilities', description: 'NASA headquarters building', center: 'Headquarters' },
+  { id: 103, name: 'JSC Mission Control Room', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/JSC%20Mission%20Control%20Room/JSC%20Mission%20Control%20Room.glb', category: 'Facilities', description: 'Mission control operations center', center: 'Johnson Space Center' },
+  { id: 104, name: 'Mobile Launcher', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mobile%20Launcher/Mobile%20Launcher%20(assembled).glb', category: 'Facilities', description: 'Mobile launcher platform', center: 'Kennedy Space Center' },
+
+  // FUTURE & EXPERIMENTAL
+  { id: 105, name: 'Advanced Technology Large-Aperture Space Telescope', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Advanced%20Technology%20Large-Aperture%20Space%20Telescope%20(ATLAST)/Advanced%20Technology%20Large-Aperture%20Space%20Telescope%20(ATLAST).glb', category: 'Concepts', description: 'Future large aperture space telescope concept', center: 'Goddard Space Flight Center' },
+  { id: 106, name: 'Constellation-X', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Constellation-X/Constellation-X.glb', category: 'Concepts', description: 'X-ray observatory concept', center: 'Goddard Space Flight Center' },
+  { id: 107, name: 'Solar Sail Concept', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20Sail%20Concept/Solar%20Sail%20Concept.glb', category: 'Concepts', description: 'Solar sail propulsion concept', center: 'Jet Propulsion Laboratory' },
+  { id: 108, name: 'X-57', url: 'https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/X-57/X-57.glb', category: 'Concepts', description: 'Electric experimental aircraft', center: 'Langley Research Center' },
 ];
 
-const CATEGORIES = ['All', ...new Set(NASA_3D_MODELS.map((m) => m.category))];
+const CATEGORIES = ["All", ...new Set(NASA_3D_MODELS.map((m) => m.category))];
 
 export default function Models3D() {
   const [selectedModel, setSelectedModel] = useState(NASA_3D_MODELS[0]);
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [sceneMode, setSceneMode] = useState('water'); // Default to water scene
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const filteredModels = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
     return NASA_3D_MODELS.filter((model) => {
-      const categoryMatch = selectedCategory === 'All' || model.category === selectedCategory;
+      const categoryMatch = selectedCategory === "All" || model.category === selectedCategory;
       const searchMatch =
-        model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        model.description.toLowerCase().includes(searchTerm.toLowerCase());
+        !term ||
+        model.name.toLowerCase().includes(term) ||
+        model.description.toLowerCase().includes(term) ||
+        model.center.toLowerCase().includes(term);
       return categoryMatch && searchMatch;
     });
   }, [selectedCategory, searchTerm]);
 
+  const stats = useMemo(
+    () => [
+      { label: "Total Models", value: NASA_3D_MODELS.length },
+      { label: "Results", value: filteredModels.length },
+      { label: "Category", value: selectedCategory },
+    ],
+    [filteredModels.length, selectedCategory]
+  );
+
   return (
     <div className="space-y-6">
-            {isFullScreen ? (
-        // Fullscreen 3D viewer
-        <ModelViewerR3F
-          modelUrl={selectedModel.url}
-          modelName={selectedModel.name}
-          isFullScreen={true}
-          onFullScreenChange={setIsFullScreen}
-          onSceneChange={setSceneMode}
-        />
-      ) : (
-        <>
-          <section className="panel border border-white/10 p-5">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-[0.4em] text-chrome-500">3D Models</p>
-                <h2 className="text-2xl font-semibold text-white">NASA 3D Resources</h2>
-                <p className="text-sm text-chrome-300">
-                  Explore interactive 3D models of spacecraft, telescopes, rovers, and more from NASA&apos;s collection.
-                  Switch between scenes, models, and environments using the Leva control panel (press H).
-                </p>
-              </div>
-              <label className="text-sm text-white">
-                <span className="mb-2 block text-xs uppercase tracking-[0.3em] text-chrome-500">Search models</span>
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded-2xl border border-white/10 bg-void-900 px-4 py-2 text-white outline-none transition placeholder:text-chrome-600 focus:border-ion-400"
-                />
-              </label>
+      {/* Header Section */}
+      <section className="panel border border-white/10 p-5">
+        <div className="space-y-2">
+          <p className="text-xs uppercase tracking-[0.4em] text-chrome-500">3D Visual Lab</p>
+          <h2 className="text-2xl font-semibold text-white">NASA 3D Resources</h2>
+          <p className="text-sm text-chrome-300">
+            Explore 100+ GLB models from NASA missions. Press <span className="text-white">H</span> for controls.
+          </p>
+        </div>
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          {stats.map((stat) => (
+            <div key={stat.label} className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3">
+              <p className="text-2xl font-semibold text-white">{stat.value}</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">{stat.label}</p>
             </div>
-          </section>
+          ))}
+        </div>
+      </section>
 
-          {/* 3D Viewer */}
-          <ModelViewerR3F
-            modelUrl={selectedModel.url}
-            modelName={selectedModel.name}
-            isFullScreen={false}
-            onFullScreenChange={setIsFullScreen}
-            onSceneChange={setSceneMode}
-          />
-
-          {/* Model Info */}
-          <div className="panel border border-white/10 p-5">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <h3 className="text-xl font-semibold text-white">{selectedModel.name}</h3>
-                <p className="mt-2 text-sm text-chrome-300">{selectedModel.description}</p>
-                <div className="mt-3 flex gap-3 text-xs text-chrome-500">
-                  <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10">{selectedModel.category}</span>
-                  <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10">{selectedModel.center}</span>
-                </div>
-              </div>
-              <a
-                href={selectedModel.url}
-                download={selectedModel.name}
-                className="flex-shrink-0 px-4 py-2 rounded-2xl border border-ion-400 bg-ion-400/10 text-sm font-semibold text-ion-100 transition hover:bg-ion-400/20"
+      {/* Main Layout: Sidebar + Viewer */}
+      <section className="grid gap-6 lg:grid-cols-[300px,1fr] xl:grid-cols-[350px,1fr]">
+        {/* Sidebar */}
+        <aside className={`panel border border-white/10 p-5 space-y-4 ${!sidebarOpen && 'hidden lg:block'}`}>
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">Browse Models</p>
+              <button
+                type="button"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="lg:hidden p-1 rounded hover:bg-white/10"
               >
-                ⬇ Download GLB
-              </a>
+                ✕
+              </button>
             </div>
+            <input
+              type="text"
+              placeholder="Search models..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full rounded-2xl border border-white/10 bg-void-900 px-3 py-2 text-sm text-white placeholder:text-chrome-600 focus:border-ion-400 outline-none"
+            />
           </div>
 
           {/* Category Filter */}
-          <div className="panel border border-white/10 p-5">
-            <p className="mb-4 text-xs uppercase tracking-[0.3em] text-chrome-500">Filter by category</p>
-            <div className="flex flex-wrap gap-2">
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-chrome-500 mb-3">Categories</p>
+            <div className="space-y-2 max-h-48 overflow-y-auto">
               {CATEGORIES.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-2xl text-sm font-medium transition ${
+                  className={`w-full text-left px-3 py-2 rounded-xl text-sm transition ${
                     selectedCategory === category
-                      ? 'bg-ion-400/20 border border-ion-400 text-ion-100'
-                      : 'bg-white/5 border border-white/10 text-chrome-400 hover:border-white/20'
+                      ? "border border-ion-400 bg-ion-400/20 text-ion-100"
+                      : "border border-white/10 bg-white/5 text-chrome-400 hover:border-white/20"
                   }`}
                 >
                   {category}
                 </button>
               ))}
             </div>
-            <p className="mt-3 text-xs text-chrome-500">{filteredModels.length} models available</p>
           </div>
 
-          {/* Model Gallery */}
+          {/* Model List */}
           <div>
-            <p className="mb-4 text-xs uppercase tracking-[0.3em] text-chrome-500">Model gallery</p>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <p className="text-xs uppercase tracking-[0.3em] text-chrome-500 mb-3">
+              Models ({filteredModels.length})
+            </p>
+            <div className="space-y-2 max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-white/20">
               {filteredModels.map((model) => (
                 <button
                   key={model.id}
-                  onClick={() => setSelectedModel(model)}
-                  className={`group rounded-2xl border p-4 text-left transition ${
+                  onClick={() => {
+                    setSelectedModel(model);
+                    setSidebarOpen(false); // Close sidebar on mobile after selection
+                  }}
+                  className={`w-full text-left px-3 py-2 rounded-xl text-sm transition border ${
                     selectedModel.id === model.id
-                      ? 'border-ion-400 bg-ion-400/10'
-                      : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
+                      ? "border-ion-400 bg-ion-400/10 text-white"
+                      : "border-white/10 bg-white/5 text-chrome-300 hover:border-white/20 hover:bg-white/10"
                   }`}
                 >
-                  <p className="font-semibold text-white group-hover:text-ion-100">{model.name}</p>
-                  <p className="mt-1 text-xs text-chrome-500">{model.category}</p>
+                  <p className="font-semibold truncate">{model.name}</p>
+                  <p className="text-xs text-chrome-600 truncate">{model.category}</p>
                 </button>
               ))}
+              {filteredModels.length === 0 && (
+                <div className="text-center py-6 text-chrome-500 text-sm">No models found</div>
+              )}
             </div>
-            {filteredModels.length === 0 && (
-              <div className="rounded-2xl border border-dashed border-white/20 p-8 text-center text-chrome-400">
-                No models match your search. Try a different query or filter.
-              </div>
-            )}
           </div>
-        </>
-      )}
+        </aside>
+
+        {/* Main Viewer Section */}
+        <div className="space-y-4">
+          {/* Toggle Button for Mobile */}
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="lg:hidden w-full px-4 py-2 rounded-2xl border border-white/10 bg-white/5 text-white hover:bg-white/10 text-sm font-medium"
+          >
+            ☰ Browse Models
+          </button>
+
+          {/* 3D Viewer Panel */}
+          <div className="panel border border-white/10 p-5">
+            <div className="space-y-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">Active Model</p>
+                  <h3 className="text-xl font-semibold text-white mt-1">{selectedModel.name}</h3>
+                  <p className="text-sm text-chrome-300 mt-2">{selectedModel.description}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsFullScreen(true)}
+                  className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/10 disabled:opacity-60 whitespace-nowrap"
+                  disabled={isFullScreen}
+                >
+                  {isFullScreen ? "Fullscreen" : "⛶ Expand"}
+                </button>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-void-950 overflow-hidden h-[400px] sm:h-[500px] lg:h-[600px]">
+                <ModelViewerR3F
+                  modelUrl={selectedModel.url}
+                  modelName={selectedModel.name}
+                  containerClassName="w-full h-full"
+                  onFullScreenChange={setIsFullScreen}
+                  forceFullScreen={isFullScreen}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Model Details Panel */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="panel border border-white/10 p-4 space-y-3">
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">Category</p>
+                <p className="text-base text-white mt-1">{selectedModel.category}</p>
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">NASA Center</p>
+                <p className="text-base text-white mt-1">{selectedModel.center}</p>
+              </div>
+            </div>
+            <div className="panel border border-white/10 p-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-chrome-500 mb-3">Actions</p>
+              <a
+                href={selectedModel.url}
+                download={selectedModel.name}
+                className="flex items-center justify-center rounded-2xl border border-ion-400 bg-ion-400/10 px-4 py-2 text-sm font-semibold text-ion-100 transition hover:bg-ion-400/20 w-full"
+              >
+                ⬇ Download GLB
+              </a>
+            </div>
+          </div>
+
+          {/* Info Section */}
+          <div className="panel border border-white/10 p-4 text-xs text-chrome-400">
+            <p>
+              🎯 <strong>Tip:</strong> Press <span className="text-white">H</span> to reveal Leva controls for lighting, rotation, and post-processing.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

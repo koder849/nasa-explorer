@@ -92,7 +92,7 @@ export default function App() {
               </div>
             </div>
 
-            <nav className="mt-6 hidden grid-cols-5 gap-3 md:grid">
+            <nav className="mt-6 hidden grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 md:grid">
               {navItems.map((item) => (
                 <NavLink
                   key={item.path}
