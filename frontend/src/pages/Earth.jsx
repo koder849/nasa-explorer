@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useEarth } from "../lib/hooks/useEarth";
+import ApiDeprecatedWarning from "../components/ApiDeprecatedWarning";
 
 export default function Earth() {
   const [date, setDate] = useState("");
@@ -50,7 +51,15 @@ export default function Earth() {
         <div className="panel border border-white/10 p-6 text-center text-sm text-chrome-300">Syncing with DSCOVR…</div>
       )}
 
-      {error && !loading && (
+      {error && !loading && error.message === "ARCHIVED" && (
+        <ApiDeprecatedWarning
+          apiName="Earth EPIC"
+          message="The Earth EPIC API has been archived by NASA and is no longer available. The data has been migrated to Earthdata GIBS API."
+          alternativeUrl="https://earthdata.nasa.gov/eosdis/gibs"
+        />
+      )}
+
+      {error && !loading && error.message !== "ARCHIVED" && (
         <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error?.message}</div>
       )}
 

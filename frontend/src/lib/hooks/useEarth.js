@@ -12,16 +12,26 @@ export const useEarth = (date) => {
     queryKey: ["earth", date],
     queryFn: async () => {
       const params = date ? { date } : undefined;
-      const response = await api.get("/earth/epic", { params });
-      if (Array.isArray(response.data)) {
-        return response.data.slice(0, 6).map((item) => ({
-          ...item,
-          url: formatEpicUrl(item),
-        }));
-      } else if (response.data?.error) {
-        throw new Error(response.data.error);
+      try {
+        const response = await api.get("/earth/epic", { params });
+        if (Array.isArray(response.data)) {
+          return response.data.slice(0, 6).map((item) => ({
+            ...item,
+            url: formatEpicUrl(item),
+          }));
+        } else if (response.data?.error) {
+          throw new Error(response.data.error);
+        }
+        return [];
+      } catch (err) {
+        // The EPIC API is archived, throw with a clear message
+        const errorMsg = err.message || "";
+        if (errorMsg.includes("archived") || errorMsg.includes("404") || errorMsg.includes("not available")) {
+          throw new Error("ARCHIVED");
+        }
+        throw err;
       }
-      return [];
     },
+    retry: false, // Don't retry archived endpoints
   });
 };

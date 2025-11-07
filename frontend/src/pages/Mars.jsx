@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useMars } from "../lib/hooks/useMars";
+import ApiDeprecatedWarning from "../components/ApiDeprecatedWarning";
 
 const cameraOptions = [
   { value: "", label: "All cameras" },
@@ -83,7 +84,15 @@ export default function Mars() {
         </div>
       )}
 
-      {error && !loading && (
+      {error && !loading && error.message === "ARCHIVED" && (
+        <ApiDeprecatedWarning
+          apiName="Mars Rover"
+          message="The Mars Rover API has been archived by NASA and is no longer available. Historical rover data can be accessed through NASA's official archives."
+          alternativeUrl="https://mars.nasa.gov/msl/home/"
+        />
+      )}
+
+      {error && !loading && error.message !== "ARCHIVED" && (
         <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error?.message}</div>
       )}
 
