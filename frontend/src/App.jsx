@@ -11,6 +11,7 @@ import APOD from "./pages/Apod";
 import Mars from "./pages/Mars";
 import Earth from "./pages/Earth";
 import Asteroids from "./pages/Asteroids";
+import Models3D from "./pages/Models3D";
 import "./styles.css";
 
 const navItems = [
@@ -19,6 +20,7 @@ const navItems = [
   { path: "/mars", label: "Mars", subtitle: "Rover feed" },
   { path: "/earth", label: "Earth", subtitle: "EPIC shots" },
   { path: "/asteroids", label: "Asteroids", subtitle: "NEO watch" },
+  { path: "/models", label: "3D Models", subtitle: "Spacecraft" },
 ];
 
 export default function App() {
@@ -144,6 +146,7 @@ export default function App() {
               <Route path="/mars" element={<Mars />} />
               <Route path="/earth" element={<Earth />} />
               <Route path="/asteroids" element={<Asteroids />} />
+              <Route path="/models" element={<Models3D />} />
             </Routes>
           </main>
 
