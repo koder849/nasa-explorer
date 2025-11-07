@@ -1,39 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
-import api from "../lib/api";
+import { useMemo, useState } from "react";
+import { useApod } from "../lib/hooks/useApod";
 
 const today = new Date().toISOString().split("T")[0];
 
 export default function APOD() {
   const [date, setDate] = useState("");
-  const [apod, setApod] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    let ignore = false;
-    const fetchApod = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const params = date ? { date } : undefined;
-        const response = await api.get("/apod", { params });
-        if (!ignore) {
-          if (response.data?.error) {
-            throw new Error(response.data.error);
-          }
-          setApod(response.data);
-        }
-      } catch (err) {
-        if (!ignore) setError(err.message);
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    };
-    fetchApod();
-    return () => {
-      ignore = true;
-    };
-  }, [date]);
+  const { data: apod, isPending: loading, error } = useApod(date);
 
   const infoList = useMemo(
     () => [
@@ -74,7 +46,7 @@ export default function APOD() {
       )}
 
       {error && !loading && (
-        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error}</div>
+        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error?.message}</div>
       )}
 
       {!loading && apod && !error && (

@@ -137,35 +137,6 @@ export default function App() {
             )}
           </header>
 
-          <section className="panel mb-6 border border-white/10 p-5">
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-3 rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-chrome-200">
-                <div className="h-10 w-10 rounded-xl border border-white/10 bg-white/5 p-2">
-                  <svg
-                    className="h-full w-full text-ion-200"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.364-6.364-2.121 2.121M8.757 15.243l-2.121 2.121m0-12.728 2.121 2.121m8.486 8.486 2.121 2.121" />
-                    <circle cx="12" cy="12" r="4" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.4em] text-chrome-500">
-                    Live briefing
-                  </p>
-                  <p>Minimal sci-fi console for NASA data.</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-void-800/70 px-4 py-2 text-xs uppercase tracking-[0.3em] text-chrome-400">
-                <span className="h-2 w-2 rounded-full bg-green-400" />
-                API latency &lt; 230ms
-              </div>
-            </div>
-          </section>
-
           <main className="flex-1 rounded-[2rem] border border-white/5 bg-void-900/60 p-4 sm:p-6">
             <Routes>
               <Route path="/" element={<Home />} />

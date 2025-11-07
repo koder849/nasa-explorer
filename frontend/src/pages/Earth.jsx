@@ -1,46 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
-import api from "../lib/api";
-
-const formatEpicUrl = (item) => {
-  const date = item.date.split(" ")[0];
-  const [year, month, day] = date.split("-");
-  return `https://epic.gsfc.nasa.gov/archive/natural/${year}/${month}/${day}/jpg/${item.image}.jpg`;
-};
+import { useMemo, useState } from "react";
+import { useEarth } from "../lib/hooks/useEarth";
 
 export default function Earth() {
   const [date, setDate] = useState("");
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    let ignore = false;
-    const fetchImages = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const params = date ? { date } : undefined;
-        const response = await api.get("/earth/epic", { params });
-        if (!ignore) {
-          if (Array.isArray(response.data)) {
-            setImages(response.data.slice(0, 6));
-          } else if (response.data?.error) {
-            throw new Error(response.data.error);
-          } else {
-            setImages([]);
-          }
-        }
-      } catch (err) {
-        if (!ignore) setError(err.message);
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    };
-    fetchImages();
-    return () => {
-      ignore = true;
-    };
-  }, [date]);
+  const { data: images = [], isPending: loading, error } = useEarth(date);
 
   const stats = useMemo(
     () => [
@@ -88,14 +51,14 @@ export default function Earth() {
       )}
 
       {error && !loading && (
-        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error}</div>
+        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error?.message}</div>
       )}
 
       {!loading && !error && (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           {images.length ? (
             images.map((item) => {
-              const url = formatEpicUrl(item);
+              const url = item.url;
               const lat = item.centroid_coordinates?.lat;
               const latDisplay = typeof lat === "number" ? `${lat.toFixed(2)}°` : "N/A";
 

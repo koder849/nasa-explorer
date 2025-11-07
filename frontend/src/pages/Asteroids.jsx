@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import api from "../lib/api";
+import { useState } from "react";
+import { useAsteroids } from "../lib/hooks/useAsteroids";
 
 const formatDate = (date) => date.toISOString().split("T")[0];
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -21,66 +21,7 @@ const twoDaysAgo = new Date(Date.now() - 2 * DAY_MS);
 export default function Asteroids() {
   const [startDate, setStartDate] = useState(formatDate(twoDaysAgo));
   const [endDate, setEndDate] = useState(formatDate(today));
-  const [asteroids, setAsteroids] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const handleStartChange = (value) => {
-    let start = value;
-    let end = endDate;
-
-    if (new Date(value) > new Date(end)) {
-      end = value;
-    }
-
-    [start, end] = clampRange(start, end);
-    setStartDate(start);
-    setEndDate(end);
-  };
-
-  const handleEndChange = (value) => {
-    let end = value;
-    let start = startDate;
-
-    if (new Date(value) < new Date(start)) {
-      start = value;
-    }
-
-    [start, end] = clampRange(start, end);
-    setStartDate(start);
-    setEndDate(end);
-  };
-
-  useEffect(() => {
-    let ignore = false;
-    const fetchAsteroids = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const response = await api.get("/asteroids/feed", {
-          params: { start_date: startDate, end_date: endDate },
-        });
-        if (!ignore) {
-          if (response.data?.near_earth_objects) {
-            const flattened = Object.values(response.data.near_earth_objects).flat();
-            setAsteroids(flattened.slice(0, 12));
-          } else if (response.data?.error) {
-            throw new Error(response.data.error);
-          } else {
-            setAsteroids([]);
-          }
-        }
-      } catch (err) {
-        if (!ignore) setError(err.message);
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    };
-    fetchAsteroids();
-    return () => {
-      ignore = true;
-    };
-  }, [startDate, endDate]);
+  const { data: asteroids = [], isPending: loading, error } = useAsteroids(startDate, endDate);
 
   return (
     <div className="space-y-6">
@@ -101,7 +42,18 @@ export default function Asteroids() {
                 type="date"
                 max={endDate}
                 value={startDate}
-                onChange={(e) => handleStartChange(e.target.value)}
+                onChange={(e) => {
+                  let start = e.target.value;
+                  let end = endDate;
+
+                  if (new Date(start) > new Date(end)) {
+                    end = start;
+                  }
+
+                  [start, end] = clampRange(start, end);
+                  setStartDate(start);
+                  setEndDate(end);
+                }}
                 className="w-full rounded-2xl border border-white/10 bg-void-900 px-4 py-2 text-white outline-none transition focus:border-ion-400"
               />
             </label>
@@ -111,7 +63,18 @@ export default function Asteroids() {
                 type="date"
                 min={startDate}
                 value={endDate}
-                onChange={(e) => handleEndChange(e.target.value)}
+                onChange={(e) => {
+                  let end = e.target.value;
+                  let start = startDate;
+
+                  if (new Date(end) < new Date(start)) {
+                    start = end;
+                  }
+
+                  [start, end] = clampRange(start, end);
+                  setStartDate(start);
+                  setEndDate(end);
+                }}
                 className="w-full rounded-2xl border border-white/10 bg-void-900 px-4 py-2 text-white outline-none transition focus:border-ion-400"
               />
             </label>
@@ -142,7 +105,7 @@ export default function Asteroids() {
       )}
 
       {error && !loading && (
-        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error}</div>
+        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error?.message}</div>
       )}
 
       {!loading && !error && (

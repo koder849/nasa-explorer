@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import api from "../lib/api";
+import { useMemo, useState } from "react";
+import { useMars } from "../lib/hooks/useMars";
 
 const cameraOptions = [
   { value: "", label: "All cameras" },
@@ -13,9 +13,6 @@ const cameraOptions = [
 export default function Mars() {
   const [solInput, setSolInput] = useState("1000");
   const [camera, setCamera] = useState("");
-  const [photos, setPhotos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   const sol = useMemo(() => {
     if (!solInput.trim()) return 1000;
@@ -23,38 +20,7 @@ export default function Mars() {
     return Number.isFinite(parsed) && parsed >= 0 ? parsed : 1000;
   }, [solInput]);
 
-  useEffect(() => {
-    let ignore = false;
-    const fetchPhotos = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const params = { sol };
-        if (camera) params.camera = camera;
-        const response = await api.get("/mars/photos", { params });
-        if (!ignore) {
-          if (Array.isArray(response.data)) {
-            setPhotos(response.data);
-          } else if (Array.isArray(response.data?.photos)) {
-            setPhotos(response.data.photos);
-          } else if (response.data?.error || response.data?.message) {
-            setError(response.data.error || response.data.message);
-            setPhotos([]);
-          } else {
-            setPhotos([]);
-          }
-        }
-      } catch (err) {
-        if (!ignore) setError(err.message);
-      } finally {
-        if (!ignore) setLoading(false);
-      }
-    };
-    fetchPhotos();
-    return () => {
-      ignore = true;
-    };
-  }, [sol, camera]);
+  const { data: photos = [], isPending: loading, error } = useMars(sol, camera);
 
   const statCards = [
     { label: "Selected sol", value: sol },
@@ -118,7 +84,7 @@ export default function Mars() {
       )}
 
       {error && !loading && (
-        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error}</div>
+        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error?.message}</div>
       )}
 
       {!loading && !error && (
