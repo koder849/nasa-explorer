@@ -91,6 +91,7 @@ export default function Models3D() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [sceneMode, setSceneMode] = useState('water'); // Default to water scene
 
   const filteredModels = useMemo(() => {
     return NASA_3D_MODELS.filter((model) => {
@@ -104,13 +105,14 @@ export default function Models3D() {
 
   return (
     <div className="space-y-6">
-      {isFullScreen ? (
+            {isFullScreen ? (
         // Fullscreen 3D viewer
         <ModelViewerR3F
           modelUrl={selectedModel.url}
           modelName={selectedModel.name}
           isFullScreen={true}
           onFullScreenChange={setIsFullScreen}
+          onSceneChange={setSceneMode}
         />
       ) : (
         <>
@@ -121,7 +123,7 @@ export default function Models3D() {
                 <h2 className="text-2xl font-semibold text-white">NASA 3D Resources</h2>
                 <p className="text-sm text-chrome-300">
                   Explore interactive 3D models of spacecraft, telescopes, rovers, and more from NASA&apos;s collection.
-                  Rotate, zoom, and pan to inspect every detail.
+                  Switch between scenes, models, and environments using the Leva control panel (press H).
                 </p>
               </div>
               <label className="text-sm text-white">
@@ -143,6 +145,7 @@ export default function Models3D() {
             modelName={selectedModel.name}
             isFullScreen={false}
             onFullScreenChange={setIsFullScreen}
+            onSceneChange={setSceneMode}
           />
 
           {/* Model Info */}

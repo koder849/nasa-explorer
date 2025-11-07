@@ -1,6 +1,6 @@
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment, Preload } from '@react-three/drei';
-import { Suspense, useRef, useState } from 'react';
+import { Suspense, useRef, useState, useEffect } from 'react';
 import { EffectComposer, ToneMapping, N8AO } from '@react-three/postprocessing';
 import { useControls, folder, button } from 'leva';
 
@@ -24,21 +24,23 @@ function LoadingBox() {
   );
 }
 
-function SceneContent({ modelUrl, showTest, controls, orbitControlsRef }) {
+function SceneContent({ modelUrl, showTest, controls, orbitControlsRef, environment }) {
   return (
     <>
-      {/* Environment with Sunset Cubemap - using correct file names and order */}
-      <Environment
-        background
-        files={[
-          '/cubemap/sunset/right.png',  // px (positive X)
-          '/cubemap/sunset/left.png',   // nx (negative X)
-          '/cubemap/sunset/top.png',    // py (positive Y)
-          '/cubemap/sunset/bot.png',    // ny (negative Y)
-          '/cubemap/sunset/front.png',  // pz (positive Z)
-          '/cubemap/sunset/back.png',   // nz (negative Z)
-        ]}
-      />
+      {/* Environment - conditional based on setting */}
+      {environment === 'sunset' && (
+        <Environment
+          background
+          files={[
+            '/cubemap/sunset/right.png',
+            '/cubemap/sunset/left.png',
+            '/cubemap/sunset/top.png',
+            '/cubemap/sunset/bot.png',
+            '/cubemap/sunset/front.png',
+            '/cubemap/sunset/back.png',
+          ]}
+        />
+      )}
 
       {/* Lighting */}
       <ambientLight intensity={controls.ambientIntensity} />
@@ -70,7 +72,7 @@ function SceneContent({ modelUrl, showTest, controls, orbitControlsRef }) {
   );
 }
 
-export default function ModelViewerR3F({ modelUrl, modelName, isFullScreen = false, onFullScreenChange }) {
+export default function ModelViewerR3F({ modelUrl, modelName, isFullScreen = false, onFullScreenChange, onSceneChange }) {
   const canvasRef = useRef();
   const orbitControlsRef = useRef();
   const [showTest, setShowTest] = useState(false);
@@ -78,10 +80,22 @@ export default function ModelViewerR3F({ modelUrl, modelName, isFullScreen = fal
 
   // Get Leva controls
   const controls = useControls({
+    'Scene Mode': folder({
+      sceneType: {
+        value: 'model',
+        options: ['model', 'empty'],
+      },
+    }),
+    'Environment': folder({
+      environment: {
+        value: 'sunset',
+        options: ['sunset', 'none'],
+      },
+    }),
     'Scene Settings': folder({
-      autoRotate: true,
+      autoRotate: false,
       autoRotateSpeed: { value: 3, min: 0, max: 10, step: 0.5 },
-      showGrid: true,
+      showGrid: false,
       showAxes: false,
       zoomSpeed: { value: 1.5, min: 0.5, max: 5, step: 0.5 },
       panSpeed: { value: 0.8, min: 0.1, max: 2, step: 0.1 },
@@ -105,6 +119,13 @@ export default function ModelViewerR3F({ modelUrl, modelName, isFullScreen = fal
     }),
   });
 
+  // Handle scene type changes
+  useEffect(() => {
+    if (onSceneChange) {
+      onSceneChange(controls.sceneType);
+    }
+  }, [controls.sceneType, onSceneChange]);
+
   const handleFullScreen = () => {
     const newState = !isFS;
     setIsFS(newState);
@@ -113,6 +134,142 @@ export default function ModelViewerR3F({ modelUrl, modelName, isFullScreen = fal
     }
   };
 
+  // For water and empty scenes, render different content
+  if (controls.sceneType === 'water') {
+    return (
+      <div className={`relative bg-void-900 overflow-hidden ${
+        isFS ? 'fixed inset-0 z-50' : 'rounded-3xl border border-white/10 h-96'
+      }`}>
+        <Canvas
+          ref={canvasRef}
+          camera={{ position: [15, 10, 15], fov: 75 }}
+          gl={{ antialias: true, alpha: true }}
+          className="w-full h-full"
+        >
+          {/* Water Plane */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+            <planeGeometry args={[100, 100, 64, 64]} />
+            <meshStandardMaterial
+              color="#1a472a"
+              metalness={0.8}
+              roughness={0.2}
+            />
+          </mesh>
+
+          {/* Lighting */}
+          <ambientLight intensity={controls.ambientIntensity} />
+          <directionalLight position={[10, 15, 10]} intensity={controls.directionalIntensity1} castShadow />
+          <directionalLight position={[-10, -5, -10]} intensity={controls.directionalIntensity2} />
+
+          {/* Grid */}
+          {controls.showGrid && <gridHelper args={[100, 20]} />}
+
+          {/* Post-processing */}
+          <EffectComposer>
+            {controls.enableToneMapping && <ToneMapping />}
+            <N8AO aoRadius={controls.aoRadius} intensity={controls.aoIntensity} />
+          </EffectComposer>
+
+          <Preload all />
+
+          <OrbitControls
+            ref={orbitControlsRef}
+            autoRotate={controls.autoRotate}
+            autoRotateSpeed={controls.autoRotateSpeed}
+            zoomSpeed={controls.zoomSpeed}
+            panSpeed={controls.panSpeed}
+            enableZoom
+            enablePan
+            enableRotate
+            dampingFactor={0.05}
+          />
+        </Canvas>
+
+        {/* Controls Overlay */}
+        <div className={`absolute top-4 right-4 flex gap-2 z-10 ${isFS ? 'flex-col' : 'flex-row'}`}>
+          <button
+            onClick={handleFullScreen}
+            className="px-3 py-2 rounded-lg text-sm font-medium transition bg-white/5 border border-white/10 text-chrome-400 hover:bg-white/10 hover:border-white/20"
+            title={isFS ? 'Exit fullscreen' : 'Enter fullscreen'}
+          >
+            {isFS ? '⛶ Exit' : '⛶ Full'}
+          </button>
+        </div>
+
+        {/* Info */}
+        {isFS && (
+          <div className="absolute top-4 left-4 text-white">
+            <h2 className="text-xl font-bold">Water Scene</h2>
+            <p className="text-xs text-chrome-500 mt-1">Default Environment</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (controls.sceneType === 'empty') {
+    return (
+      <div className={`relative bg-void-900 overflow-hidden ${
+        isFS ? 'fixed inset-0 z-50' : 'rounded-3xl border border-white/10 h-96'
+      }`}>
+        <Canvas
+          ref={canvasRef}
+          camera={{ position: [0, 4, 12], fov: 75 }}
+          gl={{ antialias: true, alpha: true }}
+          className="w-full h-full"
+        >
+          {/* Lighting only */}
+          <ambientLight intensity={controls.ambientIntensity} />
+          <directionalLight position={[10, 15, 10]} intensity={controls.directionalIntensity1} castShadow />
+          <directionalLight position={[-10, -5, -10]} intensity={controls.directionalIntensity2} />
+
+          {/* Grid */}
+          {controls.showGrid && <gridHelper args={[50, 50]} position={[0, 0, 0]} />}
+
+          {/* Post-processing */}
+          <EffectComposer>
+            {controls.enableToneMapping && <ToneMapping />}
+            <N8AO aoRadius={controls.aoRadius} intensity={controls.aoIntensity} />
+          </EffectComposer>
+
+          <Preload all />
+
+          <OrbitControls
+            ref={orbitControlsRef}
+            autoRotate={controls.autoRotate}
+            autoRotateSpeed={controls.autoRotateSpeed}
+            zoomSpeed={controls.zoomSpeed}
+            panSpeed={controls.panSpeed}
+            enableZoom
+            enablePan
+            enableRotate
+            dampingFactor={0.05}
+          />
+        </Canvas>
+
+        {/* Controls Overlay */}
+        <div className={`absolute top-4 right-4 flex gap-2 z-10 ${isFS ? 'flex-col' : 'flex-row'}`}>
+          <button
+            onClick={handleFullScreen}
+            className="px-3 py-2 rounded-lg text-sm font-medium transition bg-white/5 border border-white/10 text-chrome-400 hover:bg-white/10 hover:border-white/20"
+            title={isFS ? 'Exit fullscreen' : 'Enter fullscreen'}
+          >
+            {isFS ? '⛶ Exit' : '⛶ Full'}
+          </button>
+        </div>
+
+        {/* Info */}
+        {isFS && (
+          <div className="absolute top-4 left-4 text-white">
+            <h2 className="text-xl font-bold">Empty Scene</h2>
+            <p className="text-xs text-chrome-500 mt-1">3D Space Only</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Default model scene
   return (
     <div className={`relative bg-void-900 overflow-hidden ${
       isFS ? 'fixed inset-0 z-50' : 'rounded-3xl border border-white/10 h-96'
@@ -123,7 +280,13 @@ export default function ModelViewerR3F({ modelUrl, modelName, isFullScreen = fal
         gl={{ antialias: true, alpha: true }}
         className="w-full h-full"
       >
-        <SceneContent modelUrl={modelUrl} showTest={showTest} controls={controls} orbitControlsRef={orbitControlsRef} />
+        <SceneContent 
+          modelUrl={modelUrl} 
+          showTest={showTest} 
+          controls={controls} 
+          orbitControlsRef={orbitControlsRef}
+          environment={controls.environment}
+        />
         
         <OrbitControls
           ref={orbitControlsRef}
