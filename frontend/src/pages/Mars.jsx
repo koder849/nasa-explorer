@@ -93,7 +93,9 @@ export default function Mars() {
       )}
 
       {error && !loading && error.message !== "ARCHIVED" && (
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error?.message}</div>
+        <div className="rounded-xl border border-red-400 bg-red-50 p-4 text-sm font-semibold text-red-800">
+          {error?.message}
+        </div>
       )}
 
       {!loading && !error && (

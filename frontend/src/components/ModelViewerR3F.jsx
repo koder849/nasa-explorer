@@ -6,11 +6,9 @@ import {
   Preload,
   Stars,
   ContactShadows,
-  BakeShadows,
 } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { EffectComposer, ToneMapping, N8AO } from "@react-three/postprocessing";
-import { useControls, button, LevaPanel, useCreateStore } from "leva";
 import { Box3, Vector3 } from "three";
 
 const ENVIRONMENT_MAPS = {
@@ -194,97 +192,56 @@ export default function ModelViewerR3F({
   const canvasRef = useRef();
   const orbitControlsRef = useRef();
   const [isFS, setIsFS] = useState(false);
-  const store = useCreateStore();
+  const controlsRef = useRef(null);
+  const [controlsOpen, setControlsOpen] = useState(false);
 
-  const { sceneMode, showPlaceholder, showGrid, showAxes } = useControls(
-    "Scene",
-    () => ({
-      sceneMode: {
-        label: "Mode",
-        value: "model",
-        options: {
-          Model: "model",
-          Water: "water",
-          Void: "void",
-          Starfield: "starfield",
-          Hangar: "hangar",
-        },
-      },
-      showPlaceholder: { label: "Debug placeholder", value: false },
-      showGrid: false,
-      showAxes: false,
-    }),
-    { collapsed: true },
-    { store }
-  );
+  const [sceneMode, setSceneMode] = useState("model");
+  const [environmentPreset, setEnvironmentPreset] = useState("none");
+  const [showPlaceholder, setShowPlaceholder] = useState(false);
+  const [showGrid, setShowGrid] = useState(false);
+  const [showAxes, setShowAxes] = useState(false);
 
-  const { environmentPreset } = useControls(
-    "Environment",
-    () => ({
-      environmentPreset: {
-        label: "Backdrop",
-        value: "none",
-        options: ["none", "sunset", "galaxy", "sphere"],
-      },
-    }),
-    { collapsed: true },
-    { store }
-  );
+  const [autoRotate, setAutoRotate] = useState(false);
+  const [autoRotateSpeed, setAutoRotateSpeed] = useState(2);
+  const [zoomSpeed, setZoomSpeed] = useState(1.2);
+  const [panSpeed, setPanSpeed] = useState(0.8);
+  const [dampingFactor, setDampingFactor] = useState(0.08);
 
-  const { autoRotate, autoRotateSpeed, zoomSpeed, panSpeed, dampingFactor } =
-    useControls(
-      "Camera",
-      () => ({
-        autoRotate: false,
-        autoRotateSpeed: { value: 2, min: 0, max: 10, step: 0.5 },
-        zoomSpeed: { value: 1.2, min: 0.2, max: 4, step: 0.1 },
-        panSpeed: { value: 0.8, min: 0.1, max: 2, step: 0.1 },
-        dampingFactor: { value: 0.08, min: 0.01, max: 0.2, step: 0.01 },
-      }),
-      { collapsed: true },
-      { store }
-    );
+  const [ambientIntensity, setAmbientIntensity] = useState(0.9);
+  const [keyIntensity, setKeyIntensity] = useState(1.4);
+  const [fillIntensity, setFillIntensity] = useState(0.6);
+  const [contactShadows, setContactShadows] = useState(true);
 
-  const { ambientIntensity, keyIntensity, fillIntensity, contactShadows } =
-    useControls(
-      "Lighting",
-      () => ({
-        ambientIntensity: { value: 0.9, min: 0, max: 2, step: 0.1 },
-        keyIntensity: { value: 1.4, min: 0, max: 3, step: 0.1 },
-        fillIntensity: { value: 0.6, min: 0, max: 3, step: 0.1 },
-        contactShadows: { value: true },
-      }),
-      { collapsed: true },
-      { store }
-    );
-
-  const { aoRadius, aoIntensity, enableToneMapping } = useControls(
-    "Post",
-    () => ({
-      aoRadius: { value: 1.2, min: 0, max: 5, step: 0.1 },
-      aoIntensity: { value: 0.6, min: 0, max: 2, step: 0.05 },
-      enableToneMapping: true,
-    }),
-    { collapsed: true },
-    { store }
-  );
-
-  useControls(
-    "Actions",
-    () => ({
-      recenter: button(() => {
-        orbitControlsRef.current?.reset();
-      }),
-    }),
-    { collapsed: true },
-    { store }
-  );
+  const [aoRadius, setAoRadius] = useState(1.2);
+  const [aoIntensity, setAoIntensity] = useState(0.6);
+  const [enableToneMapping, setEnableToneMapping] = useState(true);
 
   useEffect(() => {
     if (onSceneChange) {
       onSceneChange(sceneMode);
     }
   }, [sceneMode, onSceneChange]);
+
+  useEffect(() => {
+    if (!controlsOpen) return;
+    const handleClick = (event) => {
+      if (
+        controlsRef.current &&
+        !controlsRef.current.contains(event.target) &&
+        !event.target.closest("[data-viewer-controls-button]")
+      ) {
+        setControlsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [controlsOpen]);
+
+  useEffect(() => {
+    if (orbitControlsRef.current) {
+      orbitControlsRef.current.autoRotate = autoRotate;
+    }
+  }, [autoRotate]);
 
   useEffect(() => {
     const handleChange = () => {
@@ -315,19 +272,6 @@ export default function ModelViewerR3F({
     ? "fixed inset-0 z-50 h-screen w-screen"
     : containerClassName;
 
-  const levaPanel = (
-    <div className="absolute top-4 right-4 z-30">
-      <LevaPanel
-        store={store}
-        fill
-        flat
-        hideCopyButton
-        titleBar={true}
-        // oneLineLabels
-      />
-    </div>
-  );
-
   const renderOrbitControls = () => (
     <OrbitControls
       ref={orbitControlsRef}
@@ -343,7 +287,7 @@ export default function ModelViewerR3F({
   );
 
   const instructions = (
-    <div className="pointer-events-none absolute bottom-4 left-4 text-xs text-chrome-500">
+    <div className="pointer-events-none absolute bottom-4 left-4 text-xs text-white/80">
       Drag to rotate • Scroll to zoom • Right-click to pan
       {isFS ? (
         <div className="mt-1">
@@ -352,6 +296,233 @@ export default function ModelViewerR3F({
       ) : (
         <div className="mt-1">
           Use the Expand Viewer button to enter fullscreen
+        </div>
+      )}
+    </div>
+  );
+
+  const ControlSlider = ({ label, value, min, max, step, onChange }) => {
+    const precision = step < 1 ? 2 : 1;
+    return (
+      <label className="space-y-1">
+        <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.2em] text-slate-500">
+          <span>{label}</span>
+          <span className="text-slate-900">
+            {typeof value === "number" ? value.toFixed(precision) : value}
+          </span>
+        </div>
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(event) => onChange(Number(event.target.value))}
+          className="w-full accent-indigo-600"
+        />
+      </label>
+    );
+  };
+
+  const handleRecenter = () => orbitControlsRef.current?.reset();
+
+  const controlPanel = (
+    <div className="absolute top-4 right-4 z-30 flex flex-col items-end gap-2 text-xs">
+      <button
+        type="button"
+        data-viewer-controls-button
+        onClick={() => setControlsOpen((prev) => !prev)}
+        className="rounded-full border border-white/60 bg-black/60 px-3 py-1 font-semibold uppercase tracking-[0.3em] text-white backdrop-blur transition hover:border-white/80"
+      >
+        {controlsOpen ? "Hide controls" : "Viewer controls"}
+      </button>
+      {controlsOpen && (
+        <div
+          ref={controlsRef}
+          className="w-72 rounded-2xl border border-slate-200 bg-white p-4 text-[13px] text-slate-800 shadow-2xl"
+        >
+          <div className="space-y-4">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">
+                Scene
+              </p>
+              <select
+                value={sceneMode}
+                onChange={(event) => setSceneMode(event.target.value)}
+                className="mt-2 w-full rounded-lg border border-slate-200 px-2 py-1 text-sm focus:border-indigo-500"
+              >
+                <option value="model">Model</option>
+                <option value="water">Water</option>
+                <option value="void">Void</option>
+                <option value="starfield">Starfield</option>
+                <option value="hangar">Hangar</option>
+              </select>
+              <select
+                value={environmentPreset}
+                onChange={(event) => setEnvironmentPreset(event.target.value)}
+                className="mt-2 w-full rounded-lg border border-slate-200 px-2 py-1 text-sm focus:border-indigo-500"
+              >
+                <option value="none">No backdrop</option>
+                <option value="sunset">Sunset</option>
+                <option value="galaxy">Galaxy</option>
+                <option value="sphere">Sphere</option>
+              </select>
+              <div className="mt-2 space-y-1 text-sm">
+                {[
+                  { label: "Grid", value: showGrid, setter: setShowGrid },
+                  { label: "Axes", value: showAxes, setter: setShowAxes },
+                  {
+                    label: "Placeholder",
+                    value: showPlaceholder,
+                    setter: setShowPlaceholder,
+                  },
+                ].map((item) => (
+                  <label
+                    key={item.label}
+                    className="flex items-center justify-between"
+                  >
+                    <span>{item.label}</span>
+                    <input
+                      type="checkbox"
+                      checked={item.value}
+                      onChange={(event) =>
+                        item.setter(event.target.checked)
+                      }
+                      className="h-4 w-4 accent-indigo-600"
+                    />
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">
+                Lighting
+              </p>
+              <ControlSlider
+                label="Ambient"
+                value={ambientIntensity}
+                min={0}
+                max={2}
+                step={0.1}
+                onChange={setAmbientIntensity}
+              />
+              <ControlSlider
+                label="Key"
+                value={keyIntensity}
+                min={0}
+                max={3}
+                step={0.1}
+                onChange={setKeyIntensity}
+              />
+              <ControlSlider
+                label="Fill"
+                value={fillIntensity}
+                min={0}
+                max={3}
+                step={0.1}
+                onChange={setFillIntensity}
+              />
+              <label className="flex items-center justify-between text-sm">
+                <span>Contact shadow</span>
+                <input
+                  type="checkbox"
+                  checked={contactShadows}
+                  onChange={(event) =>
+                    setContactShadows(event.target.checked)
+                  }
+                  className="h-4 w-4 accent-indigo-600"
+                />
+              </label>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">
+                Camera
+              </p>
+              <label className="flex items-center justify-between text-sm">
+                <span>Auto rotate</span>
+                <input
+                  type="checkbox"
+                  checked={autoRotate}
+                  onChange={(event) => setAutoRotate(event.target.checked)}
+                  className="h-4 w-4 accent-indigo-600"
+                />
+              </label>
+              <ControlSlider
+                label="Rotate speed"
+                value={autoRotateSpeed}
+                min={0}
+                max={10}
+                step={0.5}
+                onChange={setAutoRotateSpeed}
+              />
+              <ControlSlider
+                label="Zoom"
+                value={zoomSpeed}
+                min={0.2}
+                max={4}
+                step={0.1}
+                onChange={setZoomSpeed}
+              />
+              <ControlSlider
+                label="Pan"
+                value={panSpeed}
+                min={0.1}
+                max={2}
+                step={0.1}
+                onChange={setPanSpeed}
+              />
+              <ControlSlider
+                label="Damping"
+                value={dampingFactor}
+                min={0.01}
+                max={0.2}
+                step={0.01}
+                onChange={setDampingFactor}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">
+                Post
+              </p>
+              <ControlSlider
+                label="AO radius"
+                value={aoRadius}
+                min={0}
+                max={5}
+                step={0.1}
+                onChange={setAoRadius}
+              />
+              <ControlSlider
+                label="AO intensity"
+                value={aoIntensity}
+                min={0}
+                max={2}
+                step={0.05}
+                onChange={setAoIntensity}
+              />
+              <label className="flex items-center justify-between text-sm">
+                <span>Tone mapping</span>
+                <input
+                  type="checkbox"
+                  checked={enableToneMapping}
+                  onChange={(event) =>
+                    setEnableToneMapping(event.target.checked)
+                  }
+                  className="h-4 w-4 accent-indigo-600"
+                />
+              </label>
+              <button
+                type="button"
+                onClick={handleRecenter}
+                className="w-full rounded-full border border-slate-200 px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-800"
+              >
+                Recenter
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -397,7 +568,7 @@ export default function ModelViewerR3F({
           {renderOrbitControls()}
         </Canvas>
 
-        {levaPanel}
+        {controlPanel}
         {instructions}
         {isFS && (
           <div className="absolute top-4 left-4 text-white">
@@ -442,7 +613,7 @@ export default function ModelViewerR3F({
           {renderOrbitControls()}
         </Canvas>
 
-        {levaPanel}
+        {controlPanel}
         {instructions}
         {isFS && (
           <div className="absolute top-4 left-4 text-white">
@@ -487,7 +658,7 @@ export default function ModelViewerR3F({
         {renderOrbitControls()}
       </Canvas>
 
-      {levaPanel}
+      {controlPanel}
       {instructions}
 
       {isFS && (

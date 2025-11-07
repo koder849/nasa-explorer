@@ -32,7 +32,7 @@ export default function App() {
     <Router>
       <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
         <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-3 py-4 sm:px-4 lg:px-6">
+          <div className="mx-auto flex max-w-10xl items-center justify-between px-3 py-4 sm:px-4 lg:px-6">
             <Link
               to="/"
               className="flex items-center gap-3 font-semibold text-slate-900"
@@ -65,18 +65,6 @@ export default function App() {
                   </NavLink>
                 ))}
               </nav>
-              {/* <div className="hidden items-center gap-3 md:flex">
-                <span className="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  Systems good
-                </span>
-                <Link
-                  to="/models"
-                  className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
-                >
-                  Submit data
-                </Link>
-              </div> */}
               <button
                 type="button"
                 onClick={toggleMenu}
@@ -118,7 +106,7 @@ export default function App() {
         </header>
 
         <main className="flex-1 bg-slate-50">
-          <div className="mx-auto max-w-6xl px-3 py-8 sm:px-4 lg:px-6">
+          <div className="mx-auto max-w-10xl px-3 py-8 sm:px-4 lg:px-6">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/apod" element={<APOD />} />
@@ -131,7 +119,7 @@ export default function App() {
         </main>
 
         <footer className="border-t border-slate-200 bg-white py-4 text-xs text-slate-500">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-3 sm:px-4 lg:px-6">
+          <div className="mx-auto flex max-w-10xl flex-wrap items-center justify-between gap-3 px-3 sm:px-4 lg:px-6">
             <span>NASA Open APIs</span>
             <span>© {new Date().getFullYear()}</span>
           </div>
