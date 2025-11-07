@@ -196,12 +196,12 @@ export default function ModelViewerR3F({
   const [controlsOpen, setControlsOpen] = useState(false);
 
   const [sceneMode, setSceneMode] = useState("model");
-  const [environmentPreset, setEnvironmentPreset] = useState("none");
+  const [environmentPreset, setEnvironmentPreset] = useState("sphere");
   const [showPlaceholder, setShowPlaceholder] = useState(false);
   const [showGrid, setShowGrid] = useState(false);
   const [showAxes, setShowAxes] = useState(false);
 
-  const [autoRotate, setAutoRotate] = useState(false);
+  const [autoRotate, setAutoRotate] = useState(true);
   const [autoRotateSpeed, setAutoRotateSpeed] = useState(2);
   const [zoomSpeed, setZoomSpeed] = useState(1.2);
   const [panSpeed, setPanSpeed] = useState(0.8);
