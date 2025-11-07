@@ -1,84 +1,72 @@
-/* Local component styles used by App.jsx */
+/* shared dashboard styles */
 
-/* Navigation links */
-.nav-link {
+.panel {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 18, 30, 0.85);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 15px 35px rgba(3, 5, 12, 0.7);
+  backdrop-filter: blur(18px);
+}
+
+.panel-light {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: linear-gradient(transparent 92%, rgba(255, 255, 255, 0.08) 95%),
+    linear-gradient(90deg, transparent 92%, rgba(255, 255, 255, 0.08) 95%);
+  background-size: 28px 28px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.neon-border {
   position: relative;
-  border-radius: 0.5rem; /* rounded-lg */
-  padding: 0.5rem 1rem; /* px-4 py-2 */
-  font-size: 0.875rem; /* text-sm */
-  font-weight: 500; /* font-medium */
-  color: #94a3b8; /* starlight-400 */
-  transition: color 0.3s ease, background-color 0.3s ease;
+  border-radius: inherit;
 }
 
-.nav-link:hover {
-  color: #ffffff; /* white */
-  background-color: rgba(30, 41, 59, 0.5); /* night-700/50 */
-}
-
-.nav-link.active {
-  color: #93c5fd; /* cosmic-300 */
-  background-color: rgba(59, 130, 246, 0.1); /* cosmic-500/10 */
-}
-
-.nav-link.active::after {
+.neon-border::after {
   content: "";
   position: absolute;
-  left: 0.5rem; /* left-2 */
-  right: 0.5rem; /* right-2 */
-  bottom: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.5), transparent); /* via-cosmic-400/50 */
-}
-
-/* Background effects */
-.star-field {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.8) 100%, transparent),
-    radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.7) 100%, transparent),
-    radial-gradient(1px 1px at 50px 160px, rgba(255,255,255,0.8) 100%, transparent),
-    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.7) 100%, transparent),
-    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.8) 100%, transparent),
-    radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.7) 100%, transparent);
-  background-repeat: repeat;
-  background-size: 200px 200px;
-  opacity: 0.2;
-  animation: twinkle 4s ease-in-out infinite;
-}
-
-.cosmic-glow {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(29, 78, 216, 0.15), transparent 80%);
-}
-
-/* Simple animations used in App.jsx */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slide-down {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.1; }
-}
-
-.grid-fade-in {
-  display: grid;
-  gap: 1.5rem; /* gap-6 */
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid rgba(129, 92, 240, 0.4);
   opacity: 0;
-  animation: fade-in 0.5s ease-out forwards;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
-.animate-slide-down { animation: slide-down 0.3s ease-out forwards; }
-.animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
+.neon-border:hover::after {
+  opacity: 1;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  70% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.signal-dot {
+  position: relative;
+}
+
+.signal-dot::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 999px;
+  border: 1px solid rgba(129, 92, 240, 0.4);
+  animation: pulse-ring 2.5s infinite;
+}

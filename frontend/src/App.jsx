@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, NavLink, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  NavLink,
+  Link,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import APOD from "./pages/Apod";
 import Mars from "./pages/Mars";
@@ -8,172 +14,175 @@ import Asteroids from "./pages/Asteroids";
 import "./styles.css";
 
 const navItems = [
-  { path: "/", label: "Home" },
-  { path: "/apod", label: "APOD" },
-  { path: "/mars", label: "Mars" },
-  { path: "/earth", label: "Earth" },
-  { path: "/asteroids", label: "Asteroids" },
+  { path: "/", label: "Overview", subtitle: "Mission hub" },
+  { path: "/apod", label: "APOD", subtitle: "Daily frames" },
+  { path: "/mars", label: "Mars", subtitle: "Rover feed" },
+  { path: "/earth", label: "Earth", subtitle: "EPIC shots" },
+  { path: "/asteroids", label: "Asteroids", subtitle: "NEO watch" },
 ];
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const toggleMenu = () => setMenuOpen((prev) => !prev);
   const closeMenu = () => setMenuOpen(false);
 
   return (
     <Router>
-      <div className="min-h-dvh bg-night-500"/>
-        <div className="star-field"></div>
-        <div className="cosmic-glow"></div>
-        
-        {/* Content Wrapper */}
-        <div className="relative z-10 flex min-h-dvh flex-col">
-        
-        <header className="sticky top-0 z-40 border-b border-white/10 bg-night-600/80 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <Link
-              to="/"
-              className="group flex items-center gap-4"
-              onClick={closeMenu}
-            >
-              <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-cosmic-500 to-cosmic-600 shadow-lg transition-all duration-300 group-hover:shadow-cosmic">
-                <div className="absolute inset-[2px] rounded-lg bg-night-500 transition-all duration-300 group-hover:inset-[1.5px]"></div>
-                <div className="relative z-10 text-lg font-bold text-cosmic-200">N</div>
-              </div>
-              <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text font-display text-xl tracking-wide text-transparent">
-                NASA Explorer
-              </span>
-            </Link>
+      <div className="min-h-dvh bg-void-950 text-chrome-100">
+        <div className="relative mx-auto flex min-h-dvh max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-10">
+          <div className="absolute inset-0 -z-10 opacity-80 blur-[160px]">
+            <div className="absolute inset-x-8 top-12 h-48 rounded-full bg-ion-500/30" />
+            <div className="absolute inset-x-1/4 top-0 h-32 rounded-full bg-white/10" />
+          </div>
 
-            <nav className="hidden items-center gap-2 md:flex">
+          <header className="panel relative mb-6 overflow-hidden border border-white/10 bg-void-900/70 p-5">
+            <div className="absolute -left-32 top-0 h-40 w-40 rounded-full bg-ion-500/25 blur-3xl" />
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+              <Link
+                to="/"
+                className="flex items-center gap-4"
+                onClick={closeMenu}
+              >
+                <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-void-800 shadow-glow">
+                  <div className="signal-dot absolute h-2 w-2 rounded-full bg-ion-300" />
+                  <span className="text-2xl font-semibold tracking-[0.3em] text-white">
+                    NE
+                  </span>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.5em] text-chrome-500">
+                    Mission console
+                  </p>
+                  <p className="text-xl font-semibold text-white">
+                    NASA Explorer
+                  </p>
+                </div>
+              </Link>
+              <div className="flex items-center gap-3">
+                <div className="hidden sm:flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.3em] text-chrome-300">
+                  <span className="h-2 w-2 rounded-full bg-green-400" />
+                  Systems nominal
+                </div>
+                <button
+                  type="button"
+                  onClick={toggleMenu}
+                  className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-void-800 text-white transition hover:border-ion-400 hover:text-white md:hidden"
+                  aria-label="Toggle navigation menu"
+                  aria-expanded={menuOpen}
+                >
+                  <span className="sr-only">Toggle navigation</span>
+                  <span
+                    className={`absolute h-0.5 w-6 rounded-full bg-current transition-all duration-300 ${
+                      menuOpen ? "rotate-45" : "-translate-y-2"
+                    }`}
+                  />
+                  <span
+                    className={`absolute h-0.5 w-6 rounded-full bg-current transition-all duration-300 ${
+                      menuOpen ? "opacity-0" : "opacity-100"
+                    }`}
+                  />
+                  <span
+                    className={`absolute h-0.5 w-6 rounded-full bg-current transition-all duration-300 ${
+                      menuOpen ? "-rotate-45" : "translate-y-2"
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+
+            <nav className="mt-6 hidden grid-cols-5 gap-3 md:grid">
               {navItems.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
                   onClick={closeMenu}
                   className={({ isActive }) =>
-                    `nav-link ${isActive ? "active" : ""
+                    `neon-border flex flex-col rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-left transition ${
+                      isActive
+                        ? "border-white/20 bg-white/10 text-white"
+                        : "text-chrome-300 hover:border-white/20 hover:text-white"
                     }`
                   }
                 >
-                  {item.label}
+                  <span className="text-sm font-semibold">{item.label}</span>
+                  <span className="text-xs uppercase tracking-[0.3em] text-chrome-500">
+                    {item.subtitle}
+                  </span>
                 </NavLink>
               ))}
             </nav>
 
-            <button
-              type="button"
-              onClick={toggleMenu}
-              className="group relative h-10 w-10 rounded-lg border border-white/10 bg-night-600/50 text-white transition-colors duration-300 hover:border-cosmic-500/30 hover:text-cosmic-400 md:hidden"
-              aria-label="Toggle navigation menu"
-              aria-expanded={menuOpen}
-            >
-              <span className="sr-only">Toggle navigation</span>
-              <span
-                className={`absolute h-0.5 w-6 rounded-full bg-current transition-all duration-300 ${
-                  menuOpen ? "rotate-45" : "-translate-y-2"
-                }`}
-              />
-              <span
-                className={`absolute h-0.5 w-6 rounded-full bg-current transition-all duration-300 ${
-                  menuOpen ? "opacity-0" : "opacity-100"
-                }`}
-              />
-              <span
-                className={`absolute h-0.5 w-6 rounded-full bg-current transition-all duration-300 ${
-                  menuOpen ? "-rotate-45" : "translate-y-2"
-                }`}
-              />
-            </button>
-          </div>
-
-          {menuOpen && (
-            <div className="animate-slide-down border-t border-white/5 bg-night-600/95 backdrop-blur-xl md:hidden">
-              <nav className="divide-y divide-white/5">
+            {menuOpen && (
+              <div className="mt-4 grid gap-3 md:hidden">
                 {navItems.map((item) => (
                   <NavLink
                     key={item.path}
                     to={item.path}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-6 py-4 text-sm font-medium transition-colors ${
-                        isActive
-                          ? "bg-cosmic-500/5 text-cosmic-400"
-                          : "text-starlight-400 hover:bg-night-700/50 hover:text-white"
+                      `rounded-2xl border border-white/10 px-4 py-3 text-sm font-medium ${
+                        isActive ? "bg-white/10 text-white" : "text-chrome-300"
                       }`
                     }
                   >
-                    <span className={`h-1.5 w-1.5 rounded-full ${
-                      isActive ? "bg-cosmic-400" : "bg-starlight-700"
-                    }`}></span>
-                    {item.label}
+                    <div className="flex items-center justify-between">
+                      {item.label}
+                      <span className="text-xs uppercase tracking-[0.2em] text-chrome-500">
+                        {item.subtitle}
+                      </span>
+                    </div>
                   </NavLink>
                 ))}
-              </nav>
-            </div>
-          )}
-        </header>
+              </div>
+            )}
+          </header>
 
-        <main className="flex-1 px-4 py-8 sm:px-6 sm:py-12">
-          <div className="mx-auto max-w-7xl space-y-8">
-            <div className="animate-fade-in overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-night-600/90 to-night-700/70 p-1 backdrop-blur-sm">
-              <div className="flex items-center gap-3 rounded-xl bg-cosmic-500/5 px-5 py-4">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-cosmic-500/10 text-cosmic-400">
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2v2m0 16v2M4 12H2m20 0h-2m-2.05-6.95l-1.41 1.41M5.46 18.54l-1.41 1.41m0-14l1.41 1.41m11.13 11.13l1.41 1.41M12 7a5 5 0 110 10 5 5 0 010-10z" />
+          <section className="panel mb-6 border border-white/10 p-5">
+            <div className="flex flex-wrap gap-4">
+              <div className="flex items-center gap-3 rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-sm text-chrome-200">
+                <div className="h-10 w-10 rounded-xl border border-white/10 bg-white/5 p-2">
+                  <svg
+                    className="h-full w-full text-ion-200"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <path d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.364-6.364-2.121 2.121M8.757 15.243l-2.121 2.121m0-12.728 2.121 2.121m8.486 8.486 2.121 2.121" />
+                    <circle cx="12" cy="12" r="4" />
                   </svg>
-                </span>
-                <span className="bg-gradient-to-r from-cosmic-200 to-cosmic-100/80 bg-clip-text text-sm font-medium text-transparent">
-                  Explore NASA's data through an immersive interface
-                </span>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.4em] text-chrome-500">
+                    Live briefing
+                  </p>
+                  <p>Minimal sci-fi console for NASA data.</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-void-800/70 px-4 py-2 text-xs uppercase tracking-[0.3em] text-chrome-400">
+                <span className="h-2 w-2 rounded-full bg-green-400" />
+                API latency &lt; 230ms
               </div>
             </div>
+          </section>
 
-            <div className="grid-fade-in">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/apod" element={<APOD />} />
-                <Route path="/mars" element={<Mars />} />
-                <Route path="/earth" element={<Earth />} />
-                <Route path="/asteroids" element={<Asteroids />} />
-              </Routes>
-            </div>
-          </div>
-        </main>
+          <main className="flex-1 rounded-[2rem] border border-white/5 bg-void-900/60 p-4 sm:p-6">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/apod" element={<APOD />} />
+              <Route path="/mars" element={<Mars />} />
+              <Route path="/earth" element={<Earth />} />
+              <Route path="/asteroids" element={<Asteroids />} />
+            </Routes>
+          </main>
 
-        <footer className="mt-auto border-t border-white/10 bg-night-600/90 px-4 py-8 backdrop-blur-xl sm:px-6">
-          <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 sm:flex-row sm:justify-between">
-            <div className="flex flex-col items-center gap-3 sm:items-start">
-              <div className="flex items-center gap-2">
-                <span className="inline-flex h-8 items-center gap-2 rounded-lg bg-night-700/80 px-3 text-xs font-medium text-starlight-300">
-                  Built with NASA Open APIs
-                </span>
-                <span className="inline-flex h-8 items-center gap-2 rounded-lg bg-night-700/80 px-3 text-xs font-medium text-starlight-300">
-                  {new Date().getFullYear()}
-                </span>
-              </div>
-              <div className="flex items-center gap-4 text-xs">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-night-700/80 px-3 py-1 text-starlight-300">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
-                  </span>
-                  Systems online
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-night-700/80 px-3 py-1 text-starlight-300">
-                  <span className="h-1.5 w-1.5 rounded-full bg-cosmic-400"></span>
-                  Live data
-                </span>
-              </div>
+          <footer className="mt-8 border-t border-white/5 py-6 text-xs uppercase tracking-[0.3em] text-chrome-500">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <span>Built on NASA Open APIs</span>
+              <span>© {new Date().getFullYear()}</span>
             </div>
-            <p className="text-sm font-medium">
-              <span className="bg-gradient-to-r from-cosmic-200 to-cosmic-100/80 bg-clip-text text-transparent">
-                Keep exploring the cosmos
-              </span>
-            </p>
-          </div>
-        </footer>
+          </footer>
+        </div>
       </div>
     </Router>
   );

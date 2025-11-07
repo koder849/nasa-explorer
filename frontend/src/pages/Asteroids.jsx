@@ -16,7 +16,7 @@ const clampRange = (startValue, endValue) => {
   return [formatDate(startDateObj), formatDate(endDateObj)];
 };
 const today = new Date();
-const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000);
+const twoDaysAgo = new Date(Date.now() - 2 * DAY_MS);
 
 export default function Asteroids() {
   const [startDate, setStartDate] = useState(formatDate(twoDaysAgo));
@@ -84,67 +84,65 @@ export default function Asteroids() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-3xl border border-white/10 bg-gradient-to-br from-violet-500/10 via-slate-900/70 to-slate-900/30 p-6 shadow-2xl shadow-violet-500/10">
+      <section className="panel border border-white/10 p-5">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.4em] text-violet-200/80">Near-Earth Objects</p>
-            <h2 className="mt-3 text-3xl font-semibold text-white">Asteroid Watch</h2>
-            <p className="text-sm text-slate-300">
-              Visualize the current NEO feed within a sliding 7-day window. Responsive controls keep the interface fluid on phones
-              or ultrawide displays.
+            <p className="text-xs uppercase tracking-[0.4em] text-chrome-500">Near-Earth Objects</p>
+            <h2 className="mt-2 text-2xl font-semibold text-white">Asteroid Watch</h2>
+            <p className="text-sm text-chrome-300">
+              Visualise the active 7-day feed and inspect hazard tags, miss distances, and velocities from a clean monochrome card
+              system.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="text-sm text-slate-300">
-              <span className="mb-2 block text-xs uppercase tracking-[0.3em] text-slate-400">Start date</span>
+            <label className="text-sm text-white">
+              <span className="mb-2 block text-xs uppercase tracking-[0.3em] text-chrome-500">Start date</span>
               <input
                 type="date"
                 max={endDate}
                 value={startDate}
                 onChange={(e) => handleStartChange(e.target.value)}
-                className="w-full rounded-2xl border border-white/15 bg-slate-950/70 px-4 py-2 text-white outline-none transition focus:border-violet-400/60"
+                className="w-full rounded-2xl border border-white/10 bg-void-900 px-4 py-2 text-white outline-none transition focus:border-ion-400"
               />
             </label>
-            <label className="text-sm text-slate-300">
-              <span className="mb-2 block text-xs uppercase tracking-[0.3em] text-slate-400">End date</span>
+            <label className="text-sm text-white">
+              <span className="mb-2 block text-xs uppercase tracking-[0.3em] text-chrome-500">End date</span>
               <input
                 type="date"
                 min={startDate}
                 value={endDate}
                 onChange={(e) => handleEndChange(e.target.value)}
-                className="w-full rounded-2xl border border-white/15 bg-slate-950/70 px-4 py-2 text-white outline-none transition focus:border-violet-400/60"
+                className="w-full rounded-2xl border border-white/10 bg-void-900 px-4 py-2 text-white outline-none transition focus:border-ion-400"
               />
             </label>
           </div>
         </div>
-        <div className="mt-6 grid gap-4 text-center text-sm text-slate-200 sm:grid-cols-3">
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-            <div className="text-2xl font-semibold text-white">{asteroids.length || "—"}</div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Objects shown</p>
+        <div className="mt-6 grid gap-4 text-center text-sm text-white sm:grid-cols-3">
+          <div className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3">
+            <p className="text-2xl font-semibold">{asteroids.length || "—"}</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">Objects shown</p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-            <div className="text-2xl font-semibold text-white">
+          <div className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3">
+            <p className="text-2xl font-semibold">
               {new Date(startDate).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
-            </div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Range start</p>
+            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">Range start</p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-            <div className="text-2xl font-semibold text-white">
+          <div className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3">
+            <p className="text-2xl font-semibold">
               {new Date(endDate).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
-            </div>
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Range end</p>
+            </p>
+            <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">Range end</p>
           </div>
         </div>
       </section>
 
       {loading && (
-        <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-6 text-center text-sm text-slate-300">
-          Tracking near-Earth objects...
-        </div>
+        <div className="panel border border-white/10 p-6 text-center text-sm text-chrome-300">Tracking near-Earth objects…</div>
       )}
 
       {error && !loading && (
-        <div className="rounded-3xl border border-rose-500/40 bg-rose-950/40 p-4 text-sm text-rose-100">{error}</div>
+        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error}</div>
       )}
 
       {!loading && !error && (
@@ -156,23 +154,20 @@ export default function Asteroids() {
               const velocity = Number(approach?.relative_velocity?.kilometers_per_hour)?.toLocaleString();
 
               return (
-                <article
-                  key={asteroid.id}
-                  className="rounded-3xl border border-white/10 bg-slate-900/60 p-5 shadow-lg transition hover:-translate-y-1 hover:border-violet-300/40"
-                >
+                <article key={asteroid.id} className="neon-border rounded-3xl border border-white/10 bg-void-900 p-5">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold text-white">{asteroid.name}</h3>
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-semibold ${
                         asteroid.is_potentially_hazardous_asteroid
-                          ? "bg-rose-500/20 text-rose-200"
-                          : "bg-emerald-500/20 text-emerald-200"
+                          ? "bg-red-500/20 text-red-100"
+                          : "bg-emerald-500/20 text-emerald-100"
                       }`}
                     >
                       {asteroid.is_potentially_hazardous_asteroid ? "Hazard" : "Monitored"}
                     </span>
                   </div>
-                  <dl className="mt-4 space-y-2 text-sm text-slate-300">
+                  <dl className="mt-4 space-y-2 text-sm text-chrome-300">
                     <div className="flex justify-between">
                       <dt>Absolute magnitude</dt>
                       <dd>{asteroid.absolute_magnitude_h}</dd>
@@ -202,7 +197,7 @@ export default function Asteroids() {
               );
             })
           ) : (
-            <div className="rounded-3xl border border-dashed border-white/20 p-8 text-center text-slate-400">
+            <div className="rounded-3xl border border-dashed border-white/20 p-8 text-center text-chrome-400">
               No near-Earth objects detected for the selected range.
             </div>
           )}
