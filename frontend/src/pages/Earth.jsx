@@ -17,38 +17,37 @@ export default function Earth() {
 
   return (
     <div className="space-y-6">
-      <section className="panel border border-white/10 p-5">
+      <section className="panel border border-slate-200 bg-white p-6">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.4em] text-chrome-500">DSCOVR • EPIC</p>
-            <h2 className="text-2xl font-semibold text-white">Earth in natural color</h2>
-            <p className="text-sm text-chrome-300">
-              EPIC monitors our planet from L1. Select a date to relive a specific atmospheric event or leave the filter empty for
-              the freshest imagery.
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">DSCOVR • EPIC</p>
+            <h2 className="mt-2 text-2xl font-semibold text-slate-900">Earth in natural color</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              EPIC monitors Earth from L1. Select a date for historical weather or leave blank for the latest capture.
             </p>
           </div>
-          <label className="text-sm text-white">
-            <span className="mb-2 block text-xs uppercase tracking-[0.3em] text-chrome-500">Filter by date</span>
+          <label className="text-sm text-slate-700">
+            <span className="mb-2 block text-xs uppercase tracking-[0.3em] text-slate-500">Filter by date</span>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-void-900 px-4 py-2 text-white outline-none transition focus:border-ion-400"
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-slate-900 outline-none focus:border-indigo-400"
             />
           </label>
         </div>
-        <div className="mt-6 grid gap-4 text-sm text-white sm:grid-cols-3">
+        <div className="mt-6 grid gap-4 text-sm text-slate-900 sm:grid-cols-3">
           {stats.map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-center">
+            <div key={stat.label} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center">
               <p className="text-2xl font-semibold">{stat.value}</p>
-              <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">{stat.label}</p>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">{stat.label}</p>
             </div>
           ))}
         </div>
       </section>
 
       {loading && (
-        <div className="panel border border-white/10 p-6 text-center text-sm text-chrome-300">Syncing with DSCOVR…</div>
+        <div className="panel border border-slate-200 bg-white p-6 text-center text-sm text-slate-600">Syncing with DSCOVR…</div>
       )}
 
       {error && !loading && error.message === "ARCHIVED" && (
@@ -60,7 +59,7 @@ export default function Earth() {
       )}
 
       {error && !loading && error.message !== "ARCHIVED" && (
-        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error?.message}</div>
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error?.message}</div>
       )}
 
       {!loading && !error && (
@@ -69,24 +68,22 @@ export default function Earth() {
             images.map((item) => {
               const url = item.url;
               const lat = item.centroid_coordinates?.lat;
-              const latDisplay = typeof lat === "number" ? `${lat.toFixed(2)}°` : "N/A";
+              const latDisplay =
+                typeof lat === "number" ? `${lat.toFixed(2)}°` : "N/A";
 
               return (
-                <article
-                  key={item.identifier}
-                  className="neon-border rounded-3xl border border-white/10 bg-void-900 shadow-black/40 drop-shadow-lg"
-                >
-                  <div className="relative h-64 overflow-hidden rounded-3xl">
+                <article key={item.identifier} className="neon-border rounded-2xl bg-white">
+                  <div className="relative h-64 overflow-hidden">
                     <img src={url} alt={item.caption} className="h-full w-full object-cover" loading="lazy" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <p className="absolute bottom-3 left-4 rounded-full border border-white/20 px-3 py-1 text-xs uppercase tracking-[0.3em] text-white">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <p className="absolute bottom-3 left-4 rounded-full border border-white/50 px-3 py-1 text-xs uppercase tracking-[0.3em] text-white">
                       {item.date}
                     </p>
                   </div>
-                  <div className="space-y-2 border-t border-white/5 p-4 text-sm">
-                    <h3 className="text-lg font-semibold text-white">{item.caption}</h3>
-                    <p className="text-chrome-300">Centroid latitude: {latDisplay}</p>
-                    <a href={url} target="_blank" rel="noreferrer" className="text-xs font-semibold text-white">
+                  <div className="space-y-2 border-t border-slate-100 p-4 text-sm">
+                    <h3 className="text-lg font-semibold text-slate-900">{item.caption}</h3>
+                    <p className="text-slate-600">Centroid latitude: {latDisplay}</p>
+                    <a href={url} target="_blank" rel="noreferrer" className="text-xs font-semibold text-indigo-600">
                       Download full image →
                     </a>
                   </div>
@@ -94,7 +91,7 @@ export default function Earth() {
               );
             })
           ) : (
-            <div className="rounded-3xl border border-dashed border-white/20 p-8 text-center text-chrome-400">
+            <div className="rounded-2xl border border-dashed border-slate-200 p-8 text-center text-slate-500">
               No EPIC imagery for that date. Clear the filter to see the latest capture.
             </div>
           )}

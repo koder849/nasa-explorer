@@ -10,7 +10,7 @@ import {
 } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { EffectComposer, ToneMapping, N8AO } from "@react-three/postprocessing";
-import { useControls, folder, button, LevaPanel, useCreateStore } from "leva";
+import { useControls, button, LevaPanel, useCreateStore } from "leva";
 import { Box3, Vector3 } from "three";
 
 const ENVIRONMENT_MAPS = {
@@ -187,7 +187,7 @@ export default function ModelViewerR3F({
   modelName,
   onFullScreenChange,
   onSceneChange,
-  containerClassName = "rounded-3xl border border-white/10 min-h-[420px]",
+  containerClassName = "rounded-2xl border border-slate-200 bg-slate-900 min-h-[420px]",
   forceFullScreen = false,
 }) {
   const wrapperRef = useRef(null);

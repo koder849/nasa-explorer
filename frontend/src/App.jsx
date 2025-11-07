@@ -15,12 +15,12 @@ import Models3D from "./pages/Models3D";
 import "./styles.css";
 
 const navItems = [
-  { path: "/", label: "Overview", subtitle: "Mission hub" },
-  { path: "/apod", label: "APOD", subtitle: "Daily frames" },
-  { path: "/mars", label: "Mars", subtitle: "Rover feed" },
-  { path: "/earth", label: "Earth", subtitle: "EPIC shots" },
-  { path: "/asteroids", label: "Asteroids", subtitle: "NEO watch" },
-  { path: "/models", label: "3D Models", subtitle: "Spacecraft" },
+  { path: "/", label: "Overview" },
+  { path: "/apod", label: "APOD" },
+  { path: "/mars", label: "Mars" },
+  { path: "/earth", label: "Earth" },
+  { path: "/asteroids", label: "Asteroids" },
+  { path: "/models", label: "3D Models" },
 ];
 
 export default function App() {
@@ -30,116 +30,95 @@ export default function App() {
 
   return (
     <Router>
-      <div className="min-h-dvh bg-void-950 text-chrome-100">
-        <div className="relative mx-auto flex min-h-dvh max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-10">
-          <div className="absolute inset-0 -z-10 opacity-80 blur-[160px]">
-            <div className="absolute inset-x-8 top-12 h-48 rounded-full bg-ion-500/30" />
-            <div className="absolute inset-x-1/4 top-0 h-32 rounded-full bg-white/10" />
-          </div>
-
-          <header className="panel relative mb-6 overflow-hidden border border-white/10 bg-void-900/70 p-5">
-            <div className="absolute -left-32 top-0 h-40 w-40 rounded-full bg-ion-500/25 blur-3xl" />
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-              <Link
-                to="/"
-                className="flex items-center gap-4"
-                onClick={closeMenu}
-              >
-                <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-void-800 shadow-glow">
-                  <div className="signal-dot absolute h-2 w-2 rounded-full bg-ion-300" />
-                  <span className="text-2xl font-semibold tracking-[0.3em] text-white">
-                    NE
-                  </span>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.5em] text-chrome-500">
-                    Mission console
-                  </p>
-                  <p className="text-xl font-semibold text-white">
-                    NASA Explorer
-                  </p>
-                </div>
-              </Link>
-              <div className="flex items-center gap-3">
-                <div className="hidden sm:flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.3em] text-chrome-300">
-                  <span className="h-2 w-2 rounded-full bg-green-400" />
-                  Systems nominal
-                </div>
-                <button
-                  type="button"
-                  onClick={toggleMenu}
-                  className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-void-800 text-white transition hover:border-ion-400 hover:text-white md:hidden"
-                  aria-label="Toggle navigation menu"
-                  aria-expanded={menuOpen}
-                >
-                  <span className="sr-only">Toggle navigation</span>
-                  <span
-                    className={`absolute h-0.5 w-6 rounded-full bg-current transition-all duration-300 ${
-                      menuOpen ? "rotate-45" : "-translate-y-2"
-                    }`}
-                  />
-                  <span
-                    className={`absolute h-0.5 w-6 rounded-full bg-current transition-all duration-300 ${
-                      menuOpen ? "opacity-0" : "opacity-100"
-                    }`}
-                  />
-                  <span
-                    className={`absolute h-0.5 w-6 rounded-full bg-current transition-all duration-300 ${
-                      menuOpen ? "-rotate-45" : "translate-y-2"
-                    }`}
-                  />
-                </button>
+      <div className="min-h-screen bg-slate-50 text-slate-900">
+        <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-3 py-4 sm:px-4 lg:px-6">
+            <Link
+              to="/"
+              className="flex items-center gap-3 font-semibold text-slate-900"
+              onClick={closeMenu}
+            >
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 text-lg">
+                NE
               </div>
-            </div>
-
-            <nav className="mt-6 hidden grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 md:grid">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    `neon-border flex flex-col rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-left transition ${
-                      isActive
-                        ? "border-white/20 bg-white/10 text-white"
-                        : "text-chrome-300 hover:border-white/20 hover:text-white"
-                    }`
-                  }
-                >
-                  <span className="text-sm font-semibold">{item.label}</span>
-                  <span className="text-xs uppercase tracking-[0.3em] text-chrome-500">
-                    {item.subtitle}
-                  </span>
-                </NavLink>
-              ))}
-            </nav>
-
-            {menuOpen && (
-              <div className="mt-4 grid gap-3 md:hidden">
+              <div>
+                <p className="text-sm font-semibold">NASA Explorer</p>
+                <p className="text-xs text-slate-500">Live resources</p>
+              </div>
+            </Link>
+            <div className="flex items-center gap-4">
+              <nav className="hidden items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-sm font-medium md:flex">
                 {navItems.map((item) => (
                   <NavLink
                     key={item.path}
                     to={item.path}
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      `rounded-2xl border border-white/10 px-4 py-3 text-sm font-medium ${
-                        isActive ? "bg-white/10 text-white" : "text-chrome-300"
+                      `rounded-full px-3 py-1 transition ${
+                        isActive
+                          ? "bg-white text-slate-900 shadow-sm"
+                          : "text-slate-500 hover:text-slate-900"
                       }`
                     }
                   >
-                    <div className="flex items-center justify-between">
-                      {item.label}
-                      <span className="text-xs uppercase tracking-[0.2em] text-chrome-500">
-                        {item.subtitle}
-                      </span>
-                    </div>
+                    {item.label}
                   </NavLink>
                 ))}
+              </nav>
+              <div className="hidden items-center gap-3 md:flex">
+                <span className="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                  Systems good
+                </span>
+                <Link
+                  to="/models"
+                  className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+                >
+                  Submit data
+                </Link>
               </div>
-            )}
-          </header>
+              <button
+                type="button"
+                onClick={toggleMenu}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-900 md:hidden"
+                aria-label="Toggle navigation menu"
+                aria-expanded={menuOpen}
+              >
+                {menuOpen ? "✕" : "☰"}
+              </button>
+            </div>
+          </div>
+          {menuOpen && (
+            <div className="border-t border-slate-200 bg-white px-3 py-3 sm:px-4 lg:px-6 md:hidden">
+              <div className="flex flex-col gap-2 text-sm font-semibold">
+                {navItems.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    onClick={closeMenu}
+                    className={({ isActive }) =>
+                      `rounded-lg px-3 py-2 ${
+                        isActive ? "bg-slate-100 text-slate-900" : "text-slate-500"
+                      }`
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
+                <Link
+                  to="/models"
+                  onClick={closeMenu}
+                  className="rounded-lg bg-slate-900 px-3 py-2 text-center text-white"
+                >
+                  Submit data
+                </Link>
+              </div>
+            </div>
+          )}
+        </header>
 
-          <main className="flex-1 rounded-[2rem] border border-white/5 bg-void-900/60 p-4 sm:p-6">
+        <main className="flex-1 bg-slate-50">
+          <div className="mx-auto max-w-6xl px-3 py-8 sm:px-4 lg:px-6">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/apod" element={<APOD />} />
@@ -148,15 +127,15 @@ export default function App() {
               <Route path="/asteroids" element={<Asteroids />} />
               <Route path="/models" element={<Models3D />} />
             </Routes>
-          </main>
+          </div>
+        </main>
 
-          <footer className="mt-8 border-t border-white/5 py-6 text-xs uppercase tracking-[0.3em] text-chrome-500">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <span>Built on NASA Open APIs</span>
-              <span>© {new Date().getFullYear()}</span>
-            </div>
-          </footer>
-        </div>
+        <footer className="border-t border-slate-200 bg-white py-4 text-xs text-slate-500">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-3 sm:px-4 lg:px-6">
+            <span>NASA Open APIs</span>
+            <span>© {new Date().getFullYear()}</span>
+          </div>
+        </footer>
       </div>
     </Router>
   );

@@ -18,43 +18,50 @@ export default function APOD() {
 
   return (
     <div className="space-y-6">
-      <section className="panel border border-white/10 p-5">
+      <section className="panel border border-slate-200 bg-white p-6">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.4em] text-chrome-500">APOD</p>
-            <h2 className="text-2xl font-semibold text-white">Astronomy Picture of the Day</h2>
-            <p className="text-sm text-chrome-300">
-              Dial back in time to review NASA&apos;s daily highlight. Every card includes context, credit, and HD references inside a
-              monochrome shadcn layout.
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">APOD</p>
+            <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+              Astronomy Picture of the Day
+            </h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Explore NASA&apos;s daily highlight with full context, credits, and HD downloads.
             </p>
           </div>
-          <label className="text-sm text-chrome-200">
-            <span className="mb-2 block text-xs uppercase tracking-[0.3em] text-chrome-500">Choose a date</span>
+          <label className="text-sm text-slate-700">
+            <span className="mb-2 block text-xs uppercase tracking-[0.3em] text-slate-500">
+              Choose a date
+            </span>
             <input
               type="date"
               max={today}
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-void-900 px-4 py-2 text-white outline-none transition focus:border-ion-400"
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-slate-900 outline-none focus:border-indigo-400"
             />
           </label>
         </div>
       </section>
 
       {loading && (
-        <div className="panel border border-white/10 p-6 text-center text-sm text-chrome-300">Fetching today&apos;s postcard…</div>
+        <div className="panel border border-slate-200 bg-white p-6 text-center text-sm text-slate-600">
+          Fetching today&apos;s postcard…
+        </div>
       )}
 
       {error && !loading && (
-        <div className="rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-sm text-red-100">{error?.message}</div>
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          {error?.message}
+        </div>
       )}
 
       {!loading && apod && !error && (
         <div className="grid gap-6 lg:grid-cols-[1.2fr,0.8fr]">
-          <article className="neon-border overflow-hidden rounded-3xl border border-white/10 bg-void-900">
+          <article className="neon-border rounded-2xl bg-white">
             <div className="relative">
               {apod.media_type === "image" ? (
-                <img src={apod.url} alt={apod.title} className="max-h-[640px] w-full object-cover" loading="lazy" />
+                <img src={apod.url} alt={apod.title} className="w-full max-h-[600px] object-cover" loading="lazy" />
               ) : (
                 <iframe
                   src={apod.url}
@@ -69,25 +76,25 @@ export default function APOD() {
                   href={apod.hdurl}
                   target="_blank"
                   rel="noreferrer"
-                  className="absolute right-4 top-4 rounded-full border border-white/30 bg-void-900/80 px-3 py-1 text-xs font-semibold text-white"
+                  className="absolute right-4 top-4 rounded-full border border-white/70 bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900"
                 >
                   HD ↗
                 </a>
               )}
             </div>
-            <div className="space-y-3 border-t border-white/5 p-5">
-              <h3 className="text-xl font-semibold text-white">{apod.title}</h3>
-              <p className="text-sm text-chrome-300">{apod.explanation}</p>
+            <div className="space-y-3 border-t border-slate-100 p-5">
+              <h3 className="text-xl font-semibold text-slate-900">{apod.title}</h3>
+              <p className="text-sm text-slate-600">{apod.explanation}</p>
             </div>
           </article>
 
-          <aside className="panel border border-white/10 p-5">
-            <p className="text-xs uppercase tracking-[0.4em] text-chrome-500">Details</p>
-            <dl className="mt-4 space-y-3 text-sm text-white">
+          <aside className="panel border border-slate-200 bg-white p-5">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Details</p>
+            <dl className="mt-4 space-y-3 text-sm text-slate-800">
               {infoList.map((info) => (
-                <div key={info.label} className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3">
-                  <dt className="text-xs uppercase tracking-[0.3em] text-chrome-500">{info.label}</dt>
-                  <dd className="mt-1 text-chrome-100">{info.value}</dd>
+                <div key={info.label} className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+                  <dt className="text-xs uppercase tracking-[0.3em] text-slate-500">{info.label}</dt>
+                  <dd className="mt-1 text-slate-900">{info.value}</dd>
                 </div>
               ))}
             </dl>

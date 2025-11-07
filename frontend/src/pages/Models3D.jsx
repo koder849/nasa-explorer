@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ModelViewerR3F from "../components/ModelViewerR3F";
 
 // Comprehensive NASA 3D Models Database
@@ -153,12 +153,16 @@ export default function Models3D() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sortKey, setSortKey] = useState("alpha");
+  const [pinnedIds, setPinnedIds] = useState([]);
+  const [actionFeedback, setActionFeedback] = useState("");
 
   const filteredModels = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
     return NASA_3D_MODELS.filter((model) => {
-      const categoryMatch = selectedCategory === "All" || model.category === selectedCategory;
+      const categoryMatch =
+        selectedCategory === "All" || model.category === selectedCategory;
       const searchMatch =
         !term ||
         model.name.toLowerCase().includes(term) ||
@@ -168,72 +172,266 @@ export default function Models3D() {
     });
   }, [selectedCategory, searchTerm]);
 
+  const pinnedSet = useMemo(() => new Set(pinnedIds), [pinnedIds]);
+
+  const orderedModels = useMemo(() => {
+    const sorted = [...filteredModels].sort((a, b) => {
+      if (sortKey === "alpha") return a.name.localeCompare(b.name);
+      if (sortKey === "alpha-desc") return b.name.localeCompare(a.name);
+      if (sortKey === "category") return a.category.localeCompare(b.category);
+      return a.center.localeCompare(b.center);
+    });
+    const pinned = sorted.filter((model) => pinnedSet.has(model.id));
+    const rest = sorted.filter((model) => !pinnedSet.has(model.id));
+    return [...pinned, ...rest];
+  }, [filteredModels, sortKey, pinnedSet]);
+
   const stats = useMemo(
     () => [
       { label: "Total Models", value: NASA_3D_MODELS.length },
-      { label: "Results", value: filteredModels.length },
+      { label: "Results", value: orderedModels.length },
       { label: "Category", value: selectedCategory },
+      { label: "Active Center", value: selectedModel.center },
     ],
-    [filteredModels.length, selectedCategory]
+    [orderedModels.length, selectedCategory, selectedModel.center]
   );
+
+  const togglePin = (id) => {
+    setPinnedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard?.writeText(selectedModel.url);
+      setActionFeedback("Link copied");
+    } catch (error) {
+      console.error("Clipboard copy failed", error);
+      setActionFeedback("Copy unavailable");
+    }
+  };
+
+  useEffect(() => {
+    if (!actionFeedback) return;
+    const timeout = setTimeout(() => setActionFeedback(""), 2200);
+    return () => clearTimeout(timeout);
+  }, [actionFeedback]);
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <section className="panel border border-white/10 p-5">
-        <div className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.4em] text-chrome-500">3D Visual Lab</p>
-          <h2 className="text-2xl font-semibold text-white">NASA 3D Resources</h2>
-          <p className="text-sm text-chrome-300">
-            Explore 100+ GLB models from NASA missions. Press <span className="text-white">H</span> for controls.
-          </p>
+      <section className="rounded-2xl border border-slate-200 bg-white px-6 py-7">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+              NASA 3D Resources
+            </p>
+            <h2 className="mt-2 text-3xl font-semibold text-slate-900">
+              Interactive hardware library
+            </h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Explore spacecraft, telescopes, and ground assets pulled straight
+              from NASA&apos;s repository. Filter, sort, and pin frequently used
+              models for faster access.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600">
+              GLB assets
+            </span>
+            <span className="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600">
+              {NASA_3D_MODELS.length}+ entries
+            </span>
+          </div>
         </div>
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <div className="mt-6 grid gap-4 md:grid-cols-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-white/5 bg-white/5 px-4 py-3">
-              <p className="text-2xl font-semibold text-white">{stat.value}</p>
-              <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">{stat.label}</p>
+            <div
+              key={stat.label}
+              className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+            >
+              <p className="text-2xl font-semibold text-slate-900">
+                {stat.value}
+              </p>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                {stat.label}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Main Layout: Sidebar + Viewer */}
-      <section className="grid gap-6 lg:grid-cols-[300px,1fr] xl:grid-cols-[350px,1fr]">
-        {/* Sidebar */}
-        <aside className={`panel border border-white/10 p-5 space-y-4 ${!sidebarOpen && 'hidden lg:block'}`}>
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">Browse Models</p>
+      <section className="grid gap-6 lg:grid-cols-[minmax(0,1.3fr),minmax(280px,0.7fr)]">
+        <div className="space-y-4">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(true)}
+            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 lg:hidden"
+          >
+            Browse model list ({orderedModels.length})
+          </button>
+
+          <div className="panel rounded-2xl border border-slate-200 bg-white p-5">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                  Active model
+                </p>
+                <h3 className="mt-1 text-2xl font-semibold text-slate-900">
+                  {selectedModel.name}
+                </h3>
+                <p className="mt-2 text-sm text-slate-600">
+                  {selectedModel.description}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-600">
+                  <span className="rounded-full border border-slate-200 px-3 py-1">
+                    {selectedModel.category}
+                  </span>
+                  <span className="rounded-full border border-slate-200 px-3 py-1">
+                    {selectedModel.center}
+                  </span>
+                  {pinnedSet.has(selectedModel.id) && (
+                    <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-700">
+                      Pinned
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsFullScreen(true)}
+                  className="rounded-full border border-slate-200 px-5 py-2 text-sm font-semibold text-slate-900 disabled:border-slate-100 disabled:text-slate-400"
+                  disabled={isFullScreen}
+                >
+                  {isFullScreen ? "Fullscreen" : "Expand viewer"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => togglePin(selectedModel.id)}
+                  className="rounded-full border border-slate-200 px-5 py-2 text-sm font-semibold text-slate-900"
+                >
+                  {pinnedSet.has(selectedModel.id) ? "Unpin model" : "Pin to top"}
+                </button>
+              </div>
+            </div>
+            <div className="mt-4 rounded-2xl border border-slate-900/10 bg-slate-900/80">
+              <ModelViewerR3F
+                modelUrl={selectedModel.url}
+                modelName={selectedModel.name}
+                containerClassName="h-[420px] w-full sm:h-[520px] lg:h-[620px]"
+                onFullScreenChange={setIsFullScreen}
+                forceFullScreen={isFullScreen}
+              />
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
               <button
                 type="button"
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="lg:hidden p-1 rounded hover:bg-white/10"
+                onClick={handleCopyLink}
+                className="rounded-full border border-slate-200 px-4 py-2 font-semibold text-slate-900"
               >
-                ✕
+                Copy link
               </button>
+              <a
+                href={selectedModel.url}
+                download={selectedModel.name}
+                className="rounded-full border border-slate-900 bg-slate-900 px-4 py-2 font-semibold text-white"
+              >
+                Download GLB
+              </a>
+              <a
+                href={selectedModel.url}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-slate-200 px-4 py-2 font-semibold text-slate-900"
+              >
+                Open raw file ↗
+              </a>
+              {actionFeedback && (
+                <span className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                  {actionFeedback}
+                </span>
+              )}
             </div>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                NASA center
+              </p>
+              <p className="mt-1 text-lg font-semibold text-slate-900">
+                {selectedModel.center}
+              </p>
+              <p className="mt-1 text-sm text-slate-600">
+                Identify who produced or maintains the hardware.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                Category
+              </p>
+              <p className="mt-1 text-lg font-semibold text-slate-900">
+                {selectedModel.category}
+              </p>
+              <p className="mt-1 text-sm text-slate-600">
+                Use categories to group antennas, telescopes, rovers, and more.
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+            Tip: Press <span className="font-semibold">H</span> inside the viewer to
+            reveal lighting, camera, and post-processing controls. Pin repeat
+            assets on the right to keep them at the top.
+          </div>
+        </div>
+
+        <aside
+          className={`panel rounded-2xl border border-slate-200 bg-white p-4 ${
+            sidebarOpen ? "block" : "hidden"
+          } lg:block`}
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                Model browser
+              </p>
+              <p className="text-sm text-slate-600">
+                {orderedModels.length} results
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(false)}
+              className="text-xs text-slate-500 lg:hidden"
+            >
+              Close
+            </button>
+          </div>
+
+          <div className="mt-3">
+            <label className="text-xs font-semibold text-slate-500">Search</label>
             <input
               type="text"
-              placeholder="Search models..."
+              placeholder="Search by name, description, or center"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-void-900 px-3 py-2 text-sm text-white placeholder:text-chrome-600 focus:border-ion-400 outline-none"
+              onChange={(event) => setSearchTerm(event.target.value)}
+              className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none focus:border-indigo-400"
             />
           </div>
 
-          {/* Category Filter */}
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-chrome-500 mb-3">Categories</p>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
+          <div className="mt-4 space-y-2">
+            <p className="text-xs font-semibold text-slate-500">Categories</p>
+            <div className="flex flex-wrap gap-2">
               {CATEGORIES.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`w-full text-left px-3 py-2 rounded-xl text-sm transition ${
+                  className={`rounded-full border px-3 py-1 text-xs font-semibold ${
                     selectedCategory === category
-                      ? "border border-ion-400 bg-ion-400/20 text-ion-100"
-                      : "border border-white/10 bg-white/5 text-chrome-400 hover:border-white/20"
+                      ? "border-slate-900 bg-slate-900 text-white"
+                      : "border-slate-200 text-slate-600 hover:border-slate-300"
                   }`}
                 >
                   {category}
@@ -242,108 +440,79 @@ export default function Models3D() {
             </div>
           </div>
 
-          {/* Model List */}
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-chrome-500 mb-3">
-              Models ({filteredModels.length})
-            </p>
-            <div className="space-y-2 max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-white/20">
-              {filteredModels.map((model) => (
+          <div className="mt-4 space-y-2">
+            <p className="text-xs font-semibold text-slate-500">Sort</p>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              {[
+                { key: "alpha", label: "A → Z" },
+                { key: "alpha-desc", label: "Z → A" },
+                { key: "category", label: "Category" },
+                { key: "center", label: "NASA center" },
+              ].map((option) => (
                 <button
-                  key={model.id}
-                  onClick={() => {
-                    setSelectedModel(model);
-                    setSidebarOpen(false); // Close sidebar on mobile after selection
-                  }}
-                  className={`w-full text-left px-3 py-2 rounded-xl text-sm transition border ${
-                    selectedModel.id === model.id
-                      ? "border-ion-400 bg-ion-400/10 text-white"
-                      : "border-white/10 bg-white/5 text-chrome-300 hover:border-white/20 hover:bg-white/10"
+                  key={option.key}
+                  onClick={() => setSortKey(option.key)}
+                  className={`rounded-lg border px-3 py-2 ${
+                    sortKey === option.key
+                      ? "border-slate-900 bg-slate-900 text-white"
+                      : "border-slate-200 text-slate-600 hover:border-slate-300"
                   }`}
                 >
-                  <p className="font-semibold truncate">{model.name}</p>
-                  <p className="text-xs text-chrome-600 truncate">{model.category}</p>
+                  {option.label}
                 </button>
               ))}
-              {filteredModels.length === 0 && (
-                <div className="text-center py-6 text-chrome-500 text-sm">No models found</div>
-              )}
             </div>
           </div>
-        </aside>
 
-        {/* Main Viewer Section */}
-        <div className="space-y-4">
-          {/* Toggle Button for Mobile */}
-          <button
-            type="button"
-            onClick={() => setSidebarOpen(true)}
-            className="lg:hidden w-full px-4 py-2 rounded-2xl border border-white/10 bg-white/5 text-white hover:bg-white/10 text-sm font-medium"
-          >
-            ☰ Browse Models
-          </button>
+          {pinnedIds.length > 0 && (
+            <div className="mt-4 rounded-xl border border-amber-100 bg-amber-50 p-3 text-xs text-amber-700">
+              {pinnedIds.length} pinned model{pinnedIds.length > 1 ? "s" : ""} surface at the top of the list.
+            </div>
+          )}
 
-          {/* 3D Viewer Panel */}
-          <div className="panel border border-white/10 p-5">
-            <div className="space-y-3">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="mt-4 h-[560px] space-y-2 overflow-y-auto pr-1">
+            {orderedModels.map((model) => (
+              <button
+                key={model.id}
+                onClick={() => {
+                  setSelectedModel(model);
+                  if (window.innerWidth < 1024) {
+                    setSidebarOpen(false);
+                  }
+                }}
+                className={`flex w-full items-start justify-between gap-3 rounded-xl border px-3 py-3 text-left text-sm ${
+                  selectedModel.id === model.id
+                    ? "border-slate-900 bg-slate-900/5"
+                    : "border-slate-200 hover:border-slate-300"
+                }`}
+              >
                 <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">Active Model</p>
-                  <h3 className="text-xl font-semibold text-white mt-1">{selectedModel.name}</h3>
-                  <p className="text-sm text-chrome-300 mt-2">{selectedModel.description}</p>
+                  <p className="font-semibold text-slate-900">{model.name}</p>
+                  <p className="text-xs text-slate-500">{model.category}</p>
+                  <p className="text-[11px] text-slate-400">{model.center}</p>
                 </div>
                 <button
                   type="button"
-                  onClick={() => setIsFullScreen(true)}
-                  className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/10 disabled:opacity-60 whitespace-nowrap"
-                  disabled={isFullScreen}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    togglePin(model.id);
+                  }}
+                  className={`text-base ${
+                    pinnedSet.has(model.id) ? "text-amber-500" : "text-slate-400"
+                  }`}
+                  aria-label="Toggle pin"
                 >
-                  {isFullScreen ? "Fullscreen" : "⛶ Expand"}
+                  {pinnedSet.has(model.id) ? "★" : "☆"}
                 </button>
+              </button>
+            ))}
+            {orderedModels.length === 0 && (
+              <div className="rounded-xl border border-dashed border-slate-200 px-4 py-6 text-center text-sm text-slate-500">
+                No models found. Adjust filters or search terms.
               </div>
-              <div className="rounded-2xl border border-white/10 bg-void-950 overflow-hidden h-[400px] sm:h-[500px] lg:h-[600px]">
-                <ModelViewerR3F
-                  modelUrl={selectedModel.url}
-                  modelName={selectedModel.name}
-                  containerClassName="w-full h-full"
-                  onFullScreenChange={setIsFullScreen}
-                  forceFullScreen={isFullScreen}
-                />
-              </div>
-            </div>
+            )}
           </div>
-
-          {/* Model Details Panel */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="panel border border-white/10 p-4 space-y-3">
-              <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">Category</p>
-                <p className="text-base text-white mt-1">{selectedModel.category}</p>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-chrome-500">NASA Center</p>
-                <p className="text-base text-white mt-1">{selectedModel.center}</p>
-              </div>
-            </div>
-            <div className="panel border border-white/10 p-4">
-              <p className="text-xs uppercase tracking-[0.3em] text-chrome-500 mb-3">Actions</p>
-              <a
-                href={selectedModel.url}
-                download={selectedModel.name}
-                className="flex items-center justify-center rounded-2xl border border-ion-400 bg-ion-400/10 px-4 py-2 text-sm font-semibold text-ion-100 transition hover:bg-ion-400/20 w-full"
-              >
-                ⬇ Download GLB
-              </a>
-            </div>
-          </div>
-
-          {/* Info Section */}
-          <div className="panel border border-white/10 p-4 text-xs text-chrome-400">
-            <p>
-              🎯 <strong>Tip:</strong> Press <span className="text-white">H</span> to reveal Leva controls for lighting, rotation, and post-processing.
-            </p>
-          </div>
-        </div>
+        </aside>
       </section>
     </div>
   );
