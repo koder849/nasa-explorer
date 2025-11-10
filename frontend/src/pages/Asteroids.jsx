@@ -110,7 +110,7 @@ export default function Asteroids() {
       )}
 
       {!loading && !error && (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           {asteroids.length ? (
             asteroids.map((asteroid) => {
               const approach = asteroid.close_approach_data?.[0];

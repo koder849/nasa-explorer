@@ -73,7 +73,7 @@ export default function Earth() {
 
               return (
                 <article key={item.identifier} className="neon-border rounded-2xl bg-white">
-                  <div className="relative h-110 overflow-hidden">
+                  <div className="relative justify-self-center h-110 w-110 overflow-hidden">
                     <img src={url} alt={item.caption} className="h-full w-full object-cover" loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <p className="absolute bottom-3 left-4 rounded-full border border-white/50 px-3 py-1 text-xs uppercase tracking-[0.3em] text-white">
