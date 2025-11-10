@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "../api";
+import { fetchEpic } from "../nasaApi";
 
 const formatEpicUrl = (item) => {
   const date = item.date.split(" ")[0];
@@ -11,22 +11,25 @@ export const useEarth = (date) => {
   return useQuery({
     queryKey: ["earth", date],
     queryFn: async () => {
-      const params = date ? { date } : undefined;
       try {
-        const response = await api.get("/earth/epic", { params });
-        if (Array.isArray(response.data)) {
-          return response.data.slice(0, 6).map((item) => ({
+        const data = await fetchEpic(date);
+        if (Array.isArray(data)) {
+          return data.slice(0, 6).map((item) => ({
             ...item,
             url: formatEpicUrl(item),
           }));
-        } else if (response.data?.error) {
-          throw new Error(response.data.error);
+        } else if (data?.error) {
+          throw new Error(data.error);
         }
         return [];
       } catch (err) {
         // The EPIC API is archived, throw with a clear message
         const errorMsg = err.message || "";
-        if (errorMsg.includes("archived") || errorMsg.includes("404") || errorMsg.includes("not available")) {
+        if (
+          errorMsg.includes("archived") ||
+          errorMsg.includes("404") ||
+          errorMsg.includes("not available")
+        ) {
           throw new Error("ARCHIVED");
         }
         throw err;

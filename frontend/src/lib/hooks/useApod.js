@@ -1,16 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "../api";
+import { fetchApod } from "../nasaApi";
 
 export const useApod = (date) => {
   return useQuery({
     queryKey: ["apod", date],
     queryFn: async () => {
-      const params = date ? { date } : undefined;
-      const response = await api.get("/apod", { params });
-      if (response.data?.error) {
-        throw new Error(response.data.error);
+      const data = await fetchApod(date);
+      if (data?.error) {
+        throw new Error(data.error);
       }
-      return response.data;
+      return data;
     },
     enabled: true, // Always enable, but TanStack handles the date dependency
   });
