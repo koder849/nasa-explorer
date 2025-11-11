@@ -25,22 +25,12 @@ const navItems = [
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [hearts, setHearts] = useState(() => {
-    const saved = localStorage.getItem("nasa-explorer-hearts");
-    return saved ? parseInt(saved, 10) : 0;
-  });
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
   const closeMenu = () => setMenuOpen(false);
 
-  const addHeart = () => {
-    const newCount = hearts + 1;
-    setHearts(newCount);
-    localStorage.setItem("nasa-explorer-hearts", newCount.toString());
-  };
-
   return (
-    <Router>
+    <Router basename="/nasa-explorer">
       <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900">
         <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
           <div className="mx-auto flex max-w-10xl items-center justify-between px-3 py-4 sm:px-4 lg:px-6">
@@ -77,16 +67,12 @@ export default function App() {
                 ))}
               </nav>
               
-              {/* Heart Counter */}
-              <button
-                type="button"
-                onClick={addHeart}
-                className="flex items-center gap-1 rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600 hover:border-red-300 hover:bg-red-50 hover:text-red-600 transition"
-                aria-label="Add a heart"
-              >
-                <span className="text-base">♥</span>
-                <span className="hidden sm:inline">{hearts}</span>
-              </button>
+              {/* Hits Counter Badge */}
+              <img
+                src="https://hitscounter.dev/api/hit?url=https%3A%2F%2Fkoder849.github.io%2Fnasa-explorer&label=Visitors&icon=heart-fill&color=%23dc3545&message=&style=flat&tz=UTC"
+                alt="Visitor counter"
+                className="h-auto"
+              />
 
               {/* GitHub Link */}
               <a
