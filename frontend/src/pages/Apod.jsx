@@ -18,6 +18,27 @@ export default function APOD() {
 
   return (
     <div className="space-y-6">
+      {/* Disclaimer Section */}
+      <div className="border-l-4 border-amber-500 bg-amber-50 p-4 rounded-lg">
+        <div className="flex gap-3">
+          <span className="text-2xl shrink-0">⚠️</span>
+          <div className="flex-1">
+            <p className="font-semibold text-amber-900">API Status</p>
+            <p className="text-sm text-amber-800 mt-1">
+              This API may be rate-limited or archived by NASA. If you encounter errors, 
+              <a 
+                href="https://apod.nasa.gov/apod/archivepixFull.html" 
+                target="_blank" 
+                rel="noreferrer"
+                className="font-semibold underline hover:text-amber-900 ml-1"
+              >
+                visit the official APOD archive →
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+
       <section className="panel border border-slate-200 bg-white p-6">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>

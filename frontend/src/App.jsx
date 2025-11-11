@@ -16,11 +16,11 @@ import "./styles.css";
 
 const navItems = [
   { path: "/", label: "Overview" },
-  { path: "/apod", label: "APOD" },
-  { path: "/mars", label: "Mars" },
   { path: "/earth", label: "Earth" },
   { path: "/asteroids", label: "Asteroids" },
   { path: "/models", label: "3D Models" },
+  { path: "/apod", label: "APOD" },
+  { path: "/mars", label: "Mars" },
 ];
 
 export default function App() {
@@ -43,7 +43,7 @@ export default function App() {
               </div>
               <div>
                 <p className="text-sm font-semibold">NASA Explorer</p>
-                <p className="text-xs text-slate-500">Live resources</p>
+                <p className="text-xs text-slate-500">Live Feed</p>
               </div>
             </Link>
             <div className="flex items-center gap-4">
@@ -106,7 +106,7 @@ export default function App() {
         </header>
 
         <main className="flex-1 bg-slate-50">
-          <div className="mx-auto max-w-10xl px-3 py-8 sm:px-4 lg:px-6">
+          <div className="mx-auto max-w-10xl px-3 py-2 sm:px-4 lg:px-6">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/apod" element={<APOD />} />

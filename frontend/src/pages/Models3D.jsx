@@ -998,9 +998,9 @@ export default function Models3D() {
       </section>
 
       {/* Main layout: 80% viewer + 20% sidebar */}
-      <section className="grid gap-4 lg:grid-cols-[4fr_1fr] h-[calc(100vh-240px)]">
+      <section className="grid gap-4 lg:grid-cols-[4fr_1fr] lg:h-[calc(100vh-240px)]">
         {/* Left: 80% - 3D Viewer */}
-        <div className="flex flex-col">
+        <div className="flex flex-col min-h-[400px] lg:min-h-0">
           <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden flex-1">
             <ModelViewer3D model={selectedModel} />
           </div>
@@ -1026,7 +1026,7 @@ export default function Models3D() {
         </div>
 
         {/* Right: 20% - Minimal Sidebar */}
-        <aside className="flex flex-col rounded-2xl border border-slate-200 bg-white p-3 overflow-hidden h-full">
+        <aside className="flex flex-col rounded-2xl border border-slate-200 bg-white p-3 overflow-hidden lg:h-full max-h-96 lg:max-h-none">
           <div className="space-y-3 overflow-y-auto flex-1">
             {/* Search */}
             <div>
