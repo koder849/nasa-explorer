@@ -8,14 +8,14 @@ const showcaseCards = [
     description: "Natural-color EPIC captures with coordinates for reference.",
     path: "/earth",
     label: "DSCOVR",
-    image: "/epic.png",
+    image: "/nasa-explorer/epic.png",
   },
   {
     title: "Asteroid Watch",
     description: "Seven-day near-Earth object report with velocity + range.",
     path: "/asteroids",
     label: "NEO watch",
-    image: "/asteroid.png",
+    image: "/nasa-explorer/asteroid.png",
   },
 ];
 
@@ -171,7 +171,7 @@ export default function Home() {
                 >
                   <div className="relative h-40 w-full overflow-hidden bg-slate-100">
                     <img
-                      src="/apod.jpg"
+                      src="/nasa-explorer/apod.jpg"
                       alt="Astronomy Picture of the Day"
                       className="w-full h-full object-cover hover:scale-105 transition duration-300"
                     />
@@ -198,7 +198,7 @@ export default function Home() {
                 >
                   <div className="relative h-40 w-full overflow-hidden bg-slate-100">
                     <img
-                      src="/mars.jpg"
+                      src="/nasa-explorer/mars.jpg"
                       alt="Mars Rover Feed"
                       className="w-full h-full object-cover hover:scale-105 transition duration-300"
                     />
