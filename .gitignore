@@ -1,26 +1,31 @@
-# --- FRONTEND ---
-frontend/node_modules/
-frontend/.env
-frontend/.DS_Store
-frontend/dist/
-frontend/build/
+# Dependencies
+node_modules/
+package-lock.json
 
-# --- BACKEND ---
-backend/__pycache__/
-backend/.env
-backend/.DS_Store
-
-# --- GENERAL ---
-*.log
-*.pyc
-*.pyo
-*.db
+# Environment variables
 .env
-.DS_Store
+.env.local
+
+# Build output
+dist/
+build/
+
+# IDE
 .vscode/
 .idea/
+*.swp
+*.swo
 
-digest.txt
-
-# --- OS specific ---
+# OS
+.DS_Store
 Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Database
+*.db
+
+# Other
+digest.txt
