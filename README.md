@@ -7,7 +7,7 @@ A modern web application for exploring NASA's public datasets, real-time mission
 - **Home Dashboard** - Overview of featured NASA missions and 3D interactive Perseverance rover
 - **Earth EPIC** - Natural-color imagery of Earth from the DSCOVR satellite
 - **Asteroid Watch** - Seven-day near-Earth object tracking with velocity and distance data
-- **3D Model Library** - 500+ interactive 3D models of NASA spacecraft, telescopes, and equipment
+- **3D Model Library** - 108+ interactive 3D models of NASA spacecraft, telescopes, and equipment
 - **Mars Rover** - Historical photo archives from Mars missions (Curiosity rover)
 - **Astronomy Picture of the Day** - Daily featured astronomy images with descriptions
 
